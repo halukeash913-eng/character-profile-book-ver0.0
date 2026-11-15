@@ -427,6 +427,10 @@
     #pairModal.modal-overlay {
       background: var(--bg);
     }
+    #helpModal .modal {
+      background: var(--card);
+      opacity: 1;
+    }
     .modal-overlay.show { display: flex; }
     .modal {
       background: var(--card);
