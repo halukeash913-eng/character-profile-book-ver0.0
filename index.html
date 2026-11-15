@@ -1582,6 +1582,7 @@ ${css}
     }
 
     function savePair() {
+      let saved = false;
       try {
       const nameA = val('nameA');
       const nameB = val('nameB');
@@ -1707,11 +1708,14 @@ ${css}
         else data.pairs.pop();
         return;
       }
+      saved = true;
       closePairModal();
       renderPairs();
       } catch (err) {
         console.error(err);
-        alert('保存中にエラーが発生しました: ' + (err && err.message ? err.message : err));
+        if (!saved) {
+          alert('保存中にエラーが発生しました: ' + (err && err.message ? err.message : err));
+        }
       }
     }
 
