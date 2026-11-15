@@ -424,8 +424,16 @@
       padding: 20px;
       overflow-y: auto;
     }
+    #helpModal.modal-overlay {
+      background: var(--bg);
+    }
     #pairModal.modal-overlay {
       background: var(--bg);
+    }
+    #helpModal .modal,
+    #helpModal .help-body {
+      background-color: var(--card);
+      opacity: 1;
     }
     #helpModal .modal {
       background: var(--card);
