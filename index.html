@@ -103,12 +103,62 @@
       </div>
       <label>略歴</label>
       <textarea  type="text" id="biographyA" placeholder="設定や経歴" ></textarea>
-      <label>性格・特徴</label>
-      <input type="text" id="personalityA" />
-      <label>好きなもの</label>
-      <input type="text" id="likesA" />
-      <label>嫌いなもの</label>
-      <input type="text" id="dislikesA" >
+      <section class="basic-data-group" aria-labelledby="basicDataHeadingA">
+
+
+        <h4 class="basic-data-heading" id="basicDataHeadingA">基本データ</h4>
+        <div class="basic-data-grid">
+          <!-- 項目を増やすときは basic-data-item を追加し、保存・読み込み処理にも項目をつなぎます。 -->
+           <div class="basic-data-item">
+            <label for="birthdayA">誕生日</label>
+            <input type="text" id="birthdayA" />
+          </div>
+          <div class="basic-data-item">
+            <label for="bloodTypeA">血液型</label>
+            <input type="text" id="bloodTypeA" />
+          </div>
+          <div class="basic-data-item">
+            <label for="mbtiA">MBTI</label>
+            <input type="text" id="mbtiA" />
+          </div>
+           <div class="basic-data-item">
+            <label for="eyeColorA">目の色</label>
+            <input type="text" id="eyeColorA" />
+          </div>
+          <div class="basic-data-item">
+            <label for="hairColorA">髪の色</label>
+            <input type="text" id="hairColorA" />
+          </div>
+          <div class="basic-data-item">
+            <label for="personalityA">性格・特徴</label>
+            <input type="text" id="personalityA" />
+          </div>
+          <div class="basic-data-item">
+            <label for="likesA">好きなもの</label>
+            <input type="text" id="likesA" />
+          </div>
+          <div class="basic-data-item">
+            <label for="dislikesA">嫌いなもの</label>
+            <input type="text" id="dislikesA" />
+          </div>
+            <div class="basic-data-item">
+            <label for="hobbiesA">趣味</label>
+            <input type="text" id="hobbiesA" />
+          </div>
+            <div class="basic-data-item">
+            <label for="hometownA">出身地</label>
+            <input type="text" id="hometownA" />
+          </div>
+            <div class="basic-data-item">
+            <label for="familyA">家族構成</label>
+            <input type="text" id="familyA" />
+          </div>
+            <div class="basic-data-item">
+            <label for="occupationA">職業</label>
+            <input type="text" id="occupationA" />
+          </div>
+        </div>
+      </section>
       <label>一言紹介</label>
       <input type="text" id="catchA" />
       <label>A → B の呼び方</label>
@@ -182,12 +232,61 @@
       </div>
       <label>略歴</label>
       <textarea id="biographyB" placeholder="設定や経歴"></textarea>
-      <label>性格・特徴</label>
-      <input type="text" id="personalityB" />
-      <label>好きなもの</label>
-      <input type="text" id="likesB" />
-      <label>嫌いなもの</label>
-      <input type="text" id="dislikesB" />
+      <section class="basic-data-group" aria-labelledby="basicDataHeadingB">
+        <h4 class="basic-data-heading" id="basicDataHeadingB">基本データ</h4>
+        <div class="basic-data-grid">
+          <!-- 項目を増やすときは basic-data-item を追加し、保存・読み込み処理にも項目をつなぎます。 -->
+             <div class="basic-data-item">
+            <label for="birthdayB">誕生日</label>
+            <input type="text" id="birthdayB" />
+          </div>
+          <div class="basic-data-item">
+            <label for="bloodTypeB">血液型</label>
+            <input type="text" id="bloodTypeB" />
+          </div>
+          <div class="basic-data-item">
+            <label for="mbtiB">MBTI</label>
+            <input type="text" id="mbtiB" />
+          </div>
+           <div class="basic-data-item">
+            <label for="eyeColorB">目の色</label>
+            <input type="text" id="eyeColorB" />
+          </div>
+          <div class="basic-data-item">
+            <label for="hairColorB">髪の色</label>
+            <input type="text" id="hairColorB" />
+          </div>
+          <div class="basic-data-item">
+            <label for="personalityB">性格・特徴</label>
+            <input type="text" id="personalityB" />
+          </div>
+          <div class="basic-data-item">
+            <label for="likesB">好きなもの</label>
+            <input type="text" id="likesB" />
+          </div>
+          <div class="basic-data-item">
+            <label for="dislikesB">嫌いなもの</label>
+            <input type="text" id="dislikesB" />
+          </div>
+                    <div class="basic-data-item">
+            <label for="hobbiesB">趣味</label>
+            <input type="text" id="hobbiesB" />
+          </div>
+            <div class="basic-data-item">
+            <label for="hometownB">出身地</label>
+            <input type="text" id="hometownB" />
+          </div>
+            <div class="basic-data-item">
+            <label for="familyB">家族構成</label>
+            <input type="text" id="familyB" />
+          </div>
+            <div class="basic-data-item">
+            <label for="occupationB">職業</label>
+            <input type="text" id="occupationB" />
+          </div>
+          
+        </div>
+      </section>
       <label>一言紹介</label>
       <input type="text" id="catchB" />
       <label>B → A の呼び方</label>
@@ -1185,6 +1284,24 @@ ${css}
 
         const show = (label, value) => value ? `<div class="rel-item"><label>${label}</label><div class="value">${escapeHtml(value)}</div></div>` : '';
         const showFull = (label, value) => value ? `<div class="rel-item rel-full"><label>${label}</label><div class="value">${escapeHtml(value)}</div></div>` : '';
+        const renderBasicData = character => {
+          const fields = [
+            ['誕生日', character.birthday],
+            ['血液型', character.bloodType],
+            ['MBTI', character.mbti],
+            ['目の色', character.eyeColor],
+            ['髪の色', character.hairColor],
+            ['性格・特徴', character.personality],
+            ['好きなもの', character.likes],
+            ['嫌いなもの', character.dislikes],
+            ['趣味・特技', character.hobbies],
+            ['家族構成', character.family],
+            ['出身地', character.birthplace],
+            ['職業・学歴', character.occupation],
+          ].filter(([, value]) => value);
+          if (!fields.length) return '';
+          return `<section class="basic-data-group preview-basic-data"><h4 class="basic-data-heading">基本データ</h4><div class="basic-data-grid">${fields.map(([label, value]) => `<div class="basic-data-item"><span class="basic-data-label">${label}</span><div class="basic-data-value">${escapeHtml(value)}</div></div>`).join('')}</div></section>`;
+        };
 
         // キャラ下の♡とYES/NO
         const _qd = (typeof buildQuestionsDisplay === 'function') ? buildQuestionsDisplay(p) : {
@@ -1236,10 +1353,8 @@ ${css}
               <div class="char-name">${p.charA.emoji ? p.charA.emoji + ' ' : ''}${escapeHtml(p.charA.name)}</div>
               ${metaA?`<div class="char-meta">${escapeHtml(metaA)}</div>`:''}
               ${p.charA.catch?`<div class="char-catch">「${escapeHtml(p.charA.catch)}」</div>`:''}
+              ${renderBasicData(p.charA)}
               <div class="char-detail">
-                ${p.charA.personality?`<div>性格：${escapeHtml(p.charA.personality)}</div>`:''}
-                ${p.charA.likes?`<div>好き：${escapeHtml(p.charA.likes)}</div>`:''}
-                ${p.charA.dislikes?`<div>嫌い：${escapeHtml(p.charA.dislikes)}</div>`:''}
                 ${p.charA.memoVisible !== false && p.charA.memo?`<div>メモ：${escapeHtml(p.charA.memo)}</div>`:''}
               </div>
               ${p.callAtoB?`<div class="char-feel"><div class="label">呼び方 → ${escapeHtml(p.charB.name)}</div>${escapeHtml(p.callAtoB)}</div>`:''}
@@ -1259,10 +1374,8 @@ ${css}
               <div class="char-name">${p.charB.emoji ? p.charB.emoji + ' ' : ''}${escapeHtml(p.charB.name)}</div>
               ${metaB?`<div class="char-meta">${escapeHtml(metaB)}</div>`:''}
               ${p.charB.catch?`<div class="char-catch">「${escapeHtml(p.charB.catch)}」</div>`:''}
+              ${renderBasicData(p.charB)}
               <div class="char-detail">
-                ${p.charB.personality?`<div>性格：${escapeHtml(p.charB.personality)}</div>`:''}
-                ${p.charB.likes?`<div>好き：${escapeHtml(p.charB.likes)}</div>`:''}
-                ${p.charB.dislikes?`<div>嫌い：${escapeHtml(p.charB.dislikes)}</div>`:''}
                 ${p.charB.memoVisible !== false && p.charB.memo?`<div>メモ：${escapeHtml(p.charB.memo)}</div>`:''}
               </div>
               ${p.callBtoA?`<div class="char-feel"><div class="label">呼び方 → ${escapeHtml(p.charA.name)}</div>${escapeHtml(p.callBtoA)}</div>`:''}
@@ -1344,9 +1457,18 @@ ${css}
         document.getElementById('heightA').value = p.charA.height||'';
         document.getElementById('maleA').value = p.charA.male||'';
         document.getElementById('biographyA').value = p.charA.biography||'';
+        document.getElementById('birthdayA').value = p.charA.birthday||''; 
+        document.getElementById('bloodTypeA').value = p.charA.bloodType||'';     
+        document.getElementById('mbtiA').value = p.charA.mbti||''; 
+        document.getElementById('eyeColorA').value = p.charA.eyeColor||'';
+        document.getElementById('hairColorA').value = p.charA.hairColor||'';
         document.getElementById('personalityA').value = p.charA.personality||'';
         document.getElementById('likesA').value = p.charA.likes||'';
         document.getElementById('dislikesA').value = p.charA.dislikes||'';
+        document.getElementById('hobbiesA').value = p.charA.hobbies||'';
+        document.getElementById('hometownA').value = p.charA.hometown||'';
+        document.getElementById('familyA').value = p.charA.family||'';
+        document.getElementById('occupationA').value = p.charA.occupation||'';
         document.getElementById('catchA').value = p.charA.catch||'';
         document.getElementById('callAtoB').value = p.callAtoB||'';
         document.getElementById('feelA').value = p.feelA||'';
@@ -1363,9 +1485,18 @@ ${css}
         document.getElementById('heightB').value = p.charB.height||'';
         document.getElementById('maleB').value = p.charB.male||'';
         document.getElementById('biographyB').value = p.charB.biography||'';
+        document.getElementById('birthdayB').value = p.charB.birthday||''; 
+        document.getElementById('bloodTypeB').value = p.charB.bloodType||''; 
+        document.getElementById('mbtiB').value = p.charB.mbti||''; 
+        document.getElementById('eyeColorB').value = p.charB.eyeColor||'';
+        document.getElementById('hairColorB').value = p.charB.hairColor||'';
         document.getElementById('personalityB').value = p.charB.personality||'';
         document.getElementById('likesB').value = p.charB.likes||'';
         document.getElementById('dislikesB').value = p.charB.dislikes||'';
+        document.getElementById('hobbiesB').value = p.charB.hobbies||'';
+        document.getElementById('hometownB').value = p.charB.hometown||'';
+        document.getElementById('familyB').value = p.charB.family||'';
+        document.getElementById('occupationB').value = p.charB.occupation||'';
         document.getElementById('catchB').value = p.charB.catch||'';
         document.getElementById('callBtoA').value = p.callBtoA||'';
         document.getElementById('feelB').value = p.feelB||'';
@@ -1405,8 +1536,8 @@ ${css}
         const labelA = p.charA.emoji || (p.charA.name && p.charA.name.length > 6 ? p.charA.name.slice(0,5)+'…' : (p.charA.name || 'A'));
         const labelB = p.charB.emoji || (p.charB.name && p.charB.name.length > 6 ? p.charB.name.slice(0,5)+'…' : (p.charB.name || 'B'));
       } else {
-        ['nameA','emojiA','ageA','heightA','maleA','biographyA','personalityA','likesA','dislikesA','catchA','callAtoB','feelA','memoA',
-         'nameB','emojiB','ageB','heightB','maleB','biographyB','personalityB','likesB','dislikesB','catchB','callBtoA','feelB','memoB',
+        ['nameA','emojiA','ageA','heightA','maleA','biographyA','birthdayA','bloodTypeA','mbtiA','eyeColorA','hairColorA','personalityA','likesA','dislikesA','occupationA','hobbiesA','hometownA','catchA','callAtoB','feelA','memoA',
+         'nameB','emojiB','ageB','heightB','maleB','biographyB','birthdayB','bloodTypeB','mbtiB','eyeColorB','hairColorB','personalityB','likesB','dislikesB','occupationB','hobbiesB','hometownB','catchB','callBtoA','feelB','memoB',
          'cpName','relTags','narestome','distance','FirstImpressionOfA','FirstImpressionOfB','likeAtoB','likeBtoA','RealizeLoveAtoB','RealizeLoveBtoA','AStepsOffPath','BStepsOffPath','situation','anniversary',
          /* deepDive is config-driven */
         ].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
@@ -1464,8 +1595,17 @@ ${css}
           male: document.getElementById('maleA').value.trim(),
           biography: document.getElementById('biographyA').value.trim(),
           personality: document.getElementById('personalityA').value.trim(),
+          birthday: document.getElementById('birthdayA').value.trim(),
+          bloodType: document.getElementById('bloodTypeA').value.trim(),
+          mbti: document.getElementById('mbtiA').value.trim(),
+          eyeColor: document.getElementById('eyeColorA').value.trim(),
+          hairColor: document.getElementById('hairColorA').value.trim(),
           likes: document.getElementById('likesA').value.trim(),
           dislikes: document.getElementById('dislikesA').value.trim(),
+          hobbies: document.getElementById('hobbiesA').value.trim(),
+          hometown: document.getElementById('hometownA').value.trim(),
+          family: document.getElementById('familyA').value.trim(),
+          occupation: document.getElementById('occupationA').value.trim(),
           catch: document.getElementById('catchA').value.trim(),
           memo: document.getElementById('memoA').value.trim(),
           memoVisible: document.getElementById('memoPreviewA').checked,
@@ -1481,8 +1621,17 @@ ${css}
           male: document.getElementById('maleB').value.trim(),
           biography: document.getElementById('biographyB').value.trim(),
           personality: document.getElementById('personalityB').value.trim(),
+          birthday: document.getElementById('birthdayB').value.trim(),
+          bloodType: document.getElementById('bloodTypeB').value.trim(),
+          mbti: document.getElementById('mbtiB').value.trim(),
+          eyeColor: document.getElementById('eyeColorB').value.trim(),
+          hairColor: document.getElementById('hairColorB').value.trim(),
           likes: document.getElementById('likesB').value.trim(),
           dislikes: document.getElementById('dislikesB').value.trim(),
+          hobbies: document.getElementById('hobbiesB').value.trim(),
+          hometown: document.getElementById('hometownB').value.trim(),
+          family: document.getElementById('familyB').value.trim(),
+          occupation: document.getElementById('occupationB').value.trim(),
           catch: document.getElementById('catchB').value.trim(),
           memo: document.getElementById('memoB').value.trim(),
           memoVisible: document.getElementById('memoPreviewB').checked,
