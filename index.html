@@ -450,13 +450,12 @@
       document.getElementById('helpModal').classList.remove('show');
     }
 
-    async function downloadViewHtml(id) {
-      const pair = data.pairs.find(x => x.id === id);
+    async function downloadViewHtml(button) {
+      const card = button?.closest('.pair-card');
+      const id = card?.dataset.pairId;
+      const pair = data.pairs.find(x => String(x.id) === id);
       if (!pair) return;
 
-      renderPairs();
-      const btn = document.querySelector(`button[onclick="downloadViewHtml('${id}')"]`);
-      const card = btn ? btn.closest('.pair-card') : null;
       if (!card) {
         alert('表示用カードを取得できませんでした。');
         return;
@@ -475,6 +474,15 @@
         if (res.ok) css = await res.text();
       } catch (e) {
         console.warn('styles.css を取得できませんでした', e);
+      }
+      // file:// では fetch がブラウザーに拒否されることがあるため、読み込み済みCSSから復元する
+      if (!css) {
+        try {
+          const sheet = Array.from(document.styleSheets).find(s => s.href && s.href.endsWith('/styles.css'));
+          if (sheet) css = Array.from(sheet.cssRules, rule => rule.cssText).join('\n');
+        } catch (e) {
+          console.warn('読み込み済みの styles.css からCSSを取得できませんでした', e);
+        }
       }
       if (!css) {
         alert('styles.css を読み込めませんでした。index.html と同じフォルダに styles.css があるか確認してください。');
@@ -1263,6 +1271,7 @@ ${css}
       data.pairs.forEach(p => {
         const card = document.createElement('details');
         card.className = 'pair-card';
+        card.dataset.pairId = String(p.id);
         const colorA = p.charA.color || '#a78bfa';
         const colorB = p.charB.color || '#f472b6';
 
@@ -1337,7 +1346,7 @@ ${css}
               ${heightDiff?`<span class="diff-badge">身長差 ${heightDiff}</span>`:''}
             </div>
             <div class="pair-actions">
-              <button type="button" class="btn btn-secondary btn-sm" onclick="event.preventDefault();event.stopPropagation();downloadViewHtml('${p.id}')">観賞用HTML</button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="event.preventDefault();event.stopPropagation();downloadViewHtml(this)">観賞用HTML</button>
               <button type="button" class="btn btn-secondary btn-sm no-view-hide" onclick="event.preventDefault();event.stopPropagation();editPair('${p.id}')">編集</button>
               <button type="button" class="btn btn-danger btn-sm no-view-hide" onclick="event.preventDefault();event.stopPropagation();deletePair('${p.id}')">削除</button>
             </div>
