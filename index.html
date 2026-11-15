@@ -812,6 +812,116 @@ ${css}
       const cls = computeBubbleClasses(ax, ay, bx, by, hasA, hasB);
       if (hasA && wrapA) cls.A.forEach(c => wrapA.classList.add(c));
       if (hasB && wrapB) cls.B.forEach(c => wrapB.classList.add(c));
+      layoutMobileMapBubbles((wrapA || wrapB)?.closest('.pos-map'));
+    }
+
+    function layoutMobileMapBubbles(map) {
+      if (!map) return;
+      const bubbles = [
+        ...Array.from(map.querySelectorAll('.pos-marker-wrap')).map(wrap => ({ wrap, bubble: wrap.querySelector('.pos-bubble') })),
+      ].filter(item => item.wrap && item.bubble && getComputedStyle(item.bubble).display !== 'none');
+      if (!window.matchMedia('(max-width: 700px)').matches) {
+        map.classList.remove('mobile-bubbles-laid-out');
+        map.querySelectorAll('.pos-bubble').forEach(bubble => {
+          bubble.style.left = '';
+          bubble.style.top = '';
+          bubble.style.right = '';
+          bubble.style.bottom = '';
+          bubble.style.transform = '';
+          bubble.style.maxWidth = '';
+          bubble.style.maxHeight = '';
+          bubble.style.overflowY = '';
+          bubble.style.whiteSpace = '';
+          bubble.style.overflowWrap = '';
+        });
+        return;
+      }
+
+      map.classList.add('mobile-bubbles-laid-out');
+      const mapRect = map.getBoundingClientRect();
+      const contentLeft = mapRect.left + map.clientLeft;
+      const contentTop = mapRect.top + map.clientTop;
+      const width = map.clientWidth;
+      const height = map.clientHeight;
+      if (width < 20 || height < 20) return;
+
+      const entries = bubbles.map(item => {
+        const { wrap, bubble } = item;
+        bubble.style.position = 'absolute';
+        bubble.style.left = '0px';
+        bubble.style.top = '0px';
+        bubble.style.right = 'auto';
+        bubble.style.bottom = 'auto';
+        bubble.style.transform = 'none';
+        bubble.style.maxWidth = `${Math.max(48, Math.min(width - 16, width * 0.56))}px`;
+        bubble.style.maxHeight = `${Math.max(32, height * 0.42)}px`;
+        bubble.style.overflowY = 'auto';
+        bubble.style.whiteSpace = 'pre-wrap';
+        bubble.style.overflowWrap = 'anywhere';
+        const bubbleRect = bubble.getBoundingClientRect();
+        const markerRect = wrap.getBoundingClientRect();
+        return {
+          wrap,
+          bubble,
+          w: bubbleRect.width,
+          h: bubbleRect.height,
+          marker: {
+            x: markerRect.left - contentLeft,
+            y: markerRect.top - contentTop,
+            w: markerRect.width,
+            h: markerRect.height,
+          },
+          wrapRect: wrap.getBoundingClientRect(),
+        };
+      });
+
+      const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+      const overlap = (a, b) => {
+        const w = Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x));
+        const h = Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
+        return w * h;
+      };
+      const optionsFor = entry => {
+        const m = entry.marker;
+        const cx = m.x + m.w / 2;
+        const cy = m.y + m.h / 2;
+        const gap = 5;
+        const raw = [
+          { x: cx - entry.w / 2, y: m.y - entry.h - gap },
+          { x: cx - entry.w / 2, y: m.y + m.h + gap },
+          { x: m.x - entry.w - gap, y: cy - entry.h / 2 },
+          { x: m.x + m.w + gap, y: cy - entry.h / 2 },
+          { x: m.x - entry.w * 0.72, y: m.y - entry.h - gap },
+          { x: m.x + m.w - entry.w * 0.28, y: m.y - entry.h - gap },
+          { x: m.x - entry.w * 0.72, y: m.y + m.h + gap },
+          { x: m.x + m.w - entry.w * 0.28, y: m.y + m.h + gap },
+        ];
+        return raw.map(pos => {
+          const x = clamp(pos.x, 4, Math.max(4, width - entry.w - 4));
+          const y = clamp(pos.y, 4, Math.max(4, height - entry.h - 4));
+          const box = { x, y, w: entry.w, h: entry.h };
+          const markerOverlap = entries.reduce((sum, other) => sum + overlap(box, other.marker), 0);
+          const clampDistance = Math.abs(x - pos.x) + Math.abs(y - pos.y);
+          return { ...box, score: markerOverlap * 1000 + clampDistance };
+        });
+      };
+
+      const options = entries.map(optionsFor);
+      let best = null;
+      if (entries.length === 1) {
+        best = [options[0].reduce((a, b) => b.score < a.score ? b : a)];
+      } else {
+        options[0].forEach(a => options[1].forEach(b => {
+          const score = a.score + b.score + overlap(a, b) * 1500;
+          if (!best || score < best.score) best = { score, positions: [a, b] };
+        }));
+        best = best && best.positions;
+      }
+      if (!best) return;
+      entries.forEach((entry, index) => {
+        entry.bubble.style.left = `${best[index].x + contentLeft - entry.wrapRect.left}px`;
+        entry.bubble.style.top = `${best[index].y + contentTop - entry.wrapRect.top}px`;
+      });
     }
 
     function applyBubblePlacement(wrapEl, yPercent) {
@@ -823,6 +933,11 @@ ${css}
     window.computeBubbleClasses = computeBubbleClasses;
     window.applyPairBubblePlacement = applyPairBubblePlacement;
     window.formatBubbleText = formatBubbleText;
+    window.addEventListener('resize', () => {
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.pos-map').forEach(layoutMobileMapBubbles);
+      });
+    });
 
     function updateEditMapLabels() { /* maps are config-driven */ }
 
@@ -1191,6 +1306,15 @@ ${css}
           </div>
         `;
         list.appendChild(card);
+        card.addEventListener('toggle', () => {
+          if (card.open) requestAnimationFrame(() => card.querySelectorAll('.pos-map').forEach(layoutMobileMapBubbles));
+        });
+        card.querySelectorAll('.accordion.preview').forEach(section => {
+          section.addEventListener('toggle', () => {
+            if (section.open) requestAnimationFrame(() => section.querySelectorAll('.pos-map').forEach(layoutMobileMapBubbles));
+          });
+        });
+        card.querySelectorAll('.pos-map').forEach(layoutMobileMapBubbles);
       });
     }
 

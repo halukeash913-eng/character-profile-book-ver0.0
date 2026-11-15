@@ -1193,6 +1193,15 @@ html {
   }
 
   .pos-map-wrap { max-width: 100%; }
+  .pos-map .pos-bubble {
+    width: max-content;
+    font-size: 0.68rem;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+  }
+  .pos-map.mobile-bubbles-laid-out .pos-bubble::after { display: none; }
   .pos-marker-wrap,
   .pos-marker-wrap .pos-marker,
   .pos-marker {
