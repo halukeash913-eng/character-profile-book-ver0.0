@@ -1,7 +1,7 @@
 // questions-config.js を使って質問UI・保存・表示を扱う
 (function () {
   function cfg() {
-    return window.QUESTIONS_CONFIG || { hearts: [], yesNo: [], ab: [], maps: [], deepDive: [] };
+    return window.QUESTIONS_CONFIG || { hearts: [], yesNo: [], ab: [], maps: [], deepDive: [], worldlines: [], basicData: [], relationship: [], work: [] };
   }
 
   window.editHearts = {};
@@ -18,6 +18,10 @@
     (cfg().yesNo || []).forEach(q => { window.editYesNo[q.id] = { A: '', B: '', commentA: '', commentB: '' }; });
     (cfg().ab || []).forEach(q => { window.editAb[q.id] = { value: '', comment: '' }; });
     (cfg().deepDive || []).forEach(q => { window.editDeep[q.id] = ''; });
+    window.editWorldlines = {};
+    (cfg().worldlines || []).forEach(q => {
+      window.editWorldlines[q.id] = { attrA: '', attrB: '', commentA: '', commentB: '', detail: '' };
+    });
   };
 
   window.migratePairQuestions = function (p) {
@@ -26,6 +30,7 @@
     p.yesNo = p.yesNo || {};
     p.ab = p.ab || {};
     p.deepDive = p.deepDive || {};
+    p.worldlines = p.worldlines || {};
     if (p.loveA != null || p.loveB != null) {
       p.hearts.love = p.hearts.love || { A: p.loveA || 0, B: p.loveB || 0 };
     }
@@ -77,6 +82,17 @@
     (cfg().deepDive || []).forEach(q => {
       window.editDeep[q.id] = (p.deepDive && p.deepDive[q.id]) || '';
     });
+    window.editWorldlines = {};
+    (cfg().worldlines || []).forEach(q => {
+      const v = (p.worldlines && p.worldlines[q.id]) || {};
+      window.editWorldlines[q.id] = {
+        attrA: v.attrA || '',
+        attrB: v.attrB || '',
+        commentA: v.commentA || v.comment || '',
+        commentB: v.commentB || '',
+        detail: v.detail || ''
+      };
+    });
   };
 
   window.collectQuestionsForSave = function () {
@@ -105,12 +121,34 @@
       const el = document.getElementById(`deep_${q.id}`);
       deepDive[q.id] = el ? el.value.trim() : '';
     });
-    return { hearts, yesNo, ab, deepDive };
+    const worldlines = {};
+    (cfg().worldlines || []).forEach(q => {
+      const aA = document.getElementById(`wl_${q.id}_attrA`);
+      const aB = document.getElementById(`wl_${q.id}_attrB`);
+      const cA = document.getElementById(`wl_${q.id}_commentA`);
+      const cB = document.getElementById(`wl_${q.id}_commentB`);
+      const dt = document.getElementById(`wl_${q.id}_detail`);
+      worldlines[q.id] = {
+        attrA: aA ? aA.value.trim() : '',
+        attrB: aB ? aB.value.trim() : '',
+        commentA: cA ? cA.value.trim() : '',
+        commentB: cB ? cB.value.trim() : '',
+        detail: dt ? dt.value.trim() : ''
+      };
+    });
+    return { hearts, yesNo, ab, deepDive, worldlines };
   };
 
   function esc(str) {
     if (typeof escapeHtml === 'function') return escapeHtml(str);
     return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /** config の note を編集・表示用HTMLに */
+  function fieldNote(obj) {
+    const n = obj && obj.note;
+    if (!n) return '';
+    return `<p class="section-note field-note">${esc(n)}</p>`;
   }
 
   function renderHeartRow(container, qid, side) {
@@ -140,9 +178,15 @@
         lab.textContent = q.label;
         lab.style.display = 'block';
         lab.style.marginTop = '8px';
+        box.appendChild(lab);
+        if (q.note) {
+          const note = document.createElement('p');
+          note.className = 'section-note field-note';
+          note.textContent = q.note;
+          box.appendChild(note);
+        }
         const row = document.createElement('div');
         row.className = 'heart-select';
-        box.appendChild(lab);
         box.appendChild(row);
         renderHeartRow(row, q.id, side);
       });
@@ -159,6 +203,7 @@
         div.className = 'editor-block';
         div.innerHTML = `
           <strong>${esc(q.label)}</strong>
+          ${fieldNote(q)}
           <div class="choice-group" style="margin-top:8px;">
             <label><input type="radio" name="yn_${q.id}_${side}" value="yes" ${cur==='yes'?'checked':''}/> <span>YES</span></label>
             <label><input type="radio" name="yn_${q.id}_${side}" value="no" ${cur==='no'?'checked':''}/> <span>NO</span></label>
@@ -183,6 +228,7 @@
         div.className = 'editor-block';
         div.innerHTML = `
           <strong>${esc(q.label)}</strong>
+          ${fieldNote(q)}
           <div class="choice-group" style="margin-top:8px;">
             <label><input type="radio" name="ab_${q.id}" value="A" ${v.value==='A'?'checked':''}/> <span>${esc(short(labelA))}</span></label>
             <label><input type="radio" name="ab_${q.id}" value="B" ${v.value==='B'?'checked':''}/> <span>${esc(short(labelB))}</span></label>
@@ -200,9 +246,53 @@
         const wrap = document.createElement('div');
         wrap.innerHTML = `
           <label>${esc(q.label)}</label>
+          ${fieldNote(q)}
           <textarea id="deep_${q.id}" placeholder="任意">${esc(window.editDeep[q.id] || '')}</textarea>
         `;
         deepBox.appendChild(wrap);
+      });
+    }
+
+    // こんな世界なら？
+    const wlBox = document.getElementById('worldlinesEditor');
+    if (wlBox) {
+      wlBox.innerHTML = '';
+      const emojiA = ((document.getElementById('emojiA') || {}).value || '').trim() || 'A';
+      const emojiB = ((document.getElementById('emojiB') || {}).value || '').trim() || 'B';
+      const colorA = ((document.getElementById('colorA') || {}).value) || '#a78bfa';
+      const colorB = ((document.getElementById('colorB') || {}).value) || '#f472b6';
+      if (!(c.worldlines || []).length) {
+        wlBox.innerHTML = '<p class="section-note">questions-config.js の worldlines に項目を追加してください。</p>';
+      }
+      (c.worldlines || []).forEach(q => {
+        if (!window.editWorldlines) window.editWorldlines = {};
+        const v = window.editWorldlines[q.id] || { attrA: '', attrB: '', commentA: '', commentB: '', detail: '' };
+        const div = document.createElement('div');
+        div.className = 'worldline-card';
+        div.innerHTML = `
+          <strong>${esc(q.label)}</strong>
+          ${fieldNote(q)}
+          <div class="worldline-pair-row">
+            <div class="worldline-side">
+              <div class="worldline-attr">
+                <div class="worldline-icon" style="background:${colorA}">${esc(emojiA)}</div>
+                <input type="text" id="wl_${q.id}_attrA" placeholder="${esc(q.placeholderA || q.exampleA || '属性（A）')}" value="${esc(v.attrA)}" />
+              </div>
+              <input type="text" id="wl_${q.id}_commentA" class="worldline-side-comment" placeholder="${esc(q.commentPlaceholderA || 'Aの補足コメント')}" value="${esc(v.commentA)}" />
+            </div>
+            <div class="worldline-x">×</div>
+            <div class="worldline-side">
+              <div class="worldline-attr">
+                <div class="worldline-icon" style="background:${colorB}">${esc(emojiB)}</div>
+                <input type="text" id="wl_${q.id}_attrB" placeholder="${esc(q.placeholderB || q.exampleB || '属性（B）')}" value="${esc(v.attrB)}" />
+              </div>
+              <input type="text" id="wl_${q.id}_commentB" class="worldline-side-comment" placeholder="${esc(q.commentPlaceholderB || 'Bの補足コメント')}" value="${esc(v.commentB)}" />
+            </div>
+          </div>
+          <label>説明</label>
+          <textarea id="wl_${q.id}_detail" placeholder="この世界線での二人の関係・エピソードなど">${esc(v.detail)}</textarea>
+        `;
+        wlBox.appendChild(div);
       });
     }
   };
@@ -244,15 +334,53 @@
       if (v.value === 'A') who = `<span class="choice-a" style="font-size:1.2rem;">${esc(abLabel(p.charA, 'A'))}</span>`;
       if (v.value === 'B') who = `<span class="choice-b" style="font-size:1.2rem;">${esc(abLabel(p.charB, 'B'))}</span>`;
       const cm = memo(v.comment);
-      if (who || cm) abBody += `<div style="margin-top:8px;"><strong style="font-size:0.85rem;">${esc(q.label)}</strong><div style="margin-top:4px;">${who || '—'}${cm}</div></div>`;
+      if (who || cm) abBody += `<div style="margin-top:8px;"><strong style="font-size:0.85rem;">${esc(q.label)}</strong>${q.note ? `<div class="section-note field-note">${esc(q.note)}</div>` : ''}<div style="margin-top:4px;">${who || '—'}${cm}</div></div>`;
     });
     const abHtml = abBody ? `<details class="accordion preview" open><summary>A / B 質問</summary><div class="accordion-body">${abBody}</div></details>` : '';
     let deepBody = '';
     (c.deepDive || []).forEach(q => {
       const t = (p.deepDive && p.deepDive[q.id]) || '';
-      if (t) deepBody += `<div class="deep-dive-row"><span class="deep-dive-question">${esc(q.label)}</span><div class="deep-dive-answer">${esc(t)}</div></div>`;
+      if (t) deepBody += `<div class="deep-dive-row"><span class="deep-dive-question">${esc(q.label)}</span>${q.note ? `<div class="section-note field-note">${esc(q.note)}</div>` : ''}<div class="deep-dive-answer">${esc(t)}</div></div>`;
     });
     const deepHtml = deepBody ? `<details class="accordion preview" open><summary>〇〇の時は？ / 深掘り</summary><div class="accordion-body">${deepBody}</div></details>` : '';
+
+    let wlBody = '';
+    const wlEmojiA = (p.charA && p.charA.emoji) || 'A';
+    const wlEmojiB = (p.charB && p.charB.emoji) || 'B';
+    const wlColorA = (p.charA && p.charA.color) || '#a78bfa';
+    const wlColorB = (p.charB && p.charB.color) || '#f472b6';
+    (c.worldlines || []).forEach(q => {
+      const v = (p.worldlines && p.worldlines[q.id]) || {};
+      const cA = v.commentA || v.comment || '';
+      const cB = v.commentB || '';
+      if (!(v.attrA || v.attrB || cA || cB || v.detail)) return;
+      wlBody += `<div class="worldline-card">
+        <strong>${esc(q.label)}</strong>
+        ${q.note ? `<p class="section-note field-note">${esc(q.note)}</p>` : ''}
+        <div class="worldline-pair-row preview">
+          <div class="worldline-side">
+            <div class="worldline-preview-attr">
+              <div class="worldline-icon" style="background:${wlColorA}">${esc(wlEmojiA)}</div>
+              <span class="worldline-attr-text">${esc(v.attrA || '—')}</span>
+            </div>
+            ${cA ? `<div class="song-memo">${esc(cA)}</div>` : ''}
+          </div>
+          <div class="worldline-x">×</div>
+          <div class="worldline-side">
+            <div class="worldline-preview-attr">
+              <div class="worldline-icon" style="background:${wlColorB}">${esc(wlEmojiB)}</div>
+              <span class="worldline-attr-text">${esc(v.attrB || '—')}</span>
+            </div>
+            ${cB ? `<div class="song-memo">${esc(cB)}</div>` : ''}
+          </div>
+        </div>
+        ${v.detail ? `<div class="worldline-detail"> ${esc(v.detail)} </div>` : ''}
+      </div>`;
+    });
+    const worldlinesHtml = wlBody
+      ? `<details class="accordion preview" open><summary>こんな世界なら？</summary><div class="accordion-body">${wlBody}</div></details>`
+      : '';
+
     return {
       heartA: heartsHtml('A'),
       heartB: heartsHtml('B'),
@@ -260,6 +388,7 @@
       ynB: yesNoHtml('B'),
       abHtml,
       deepHtml,
+      worldlinesHtml,
     };
   };
 
@@ -349,19 +478,25 @@
   };
 
   window.collectMapsForSave = function () {
-    // コメント入力を反映
+    // コメント入力を反映し、未回答フラグを再計算
     (cfg().maps || []).forEach(m => {
       if (!window.editMaps[m.id]) {
         window.editMaps[m.id] = { ax: 30, ay: 40, bx: 70, by: 60, commentA: '', commentB: '', unanswered: true, answered: false };
       }
+      const st = window.editMaps[m.id];
       const cA = document.getElementById('mapCommentA_' + m.id);
       const cB = document.getElementById('mapCommentB_' + m.id);
-      if (cA) window.editMaps[m.id].commentA = cA.value.trim();
-      if (cB) window.editMaps[m.id].commentB = cB.value.trim();
-      if ((cA && cA.value.trim()) || (cB && cB.value.trim())) {
-        window.editMaps[m.id].unanswered = false;
-        window.editMaps[m.id].answered = true;
-      }
+      if (cA) st.commentA = cA.value.trim();
+      if (cB) st.commentB = cB.value.trim();
+      const ax = st.ax != null ? st.ax : 30;
+      const ay = st.ay != null ? st.ay : 40;
+      const bx = st.bx != null ? st.bx : 70;
+      const by = st.by != null ? st.by : 60;
+      const atDefault = (ax === 30 && ay === 40 && bx === 70 && by === 60);
+      const hasComment = !!(st.commentA || st.commentB);
+      const hasAnswer = !atDefault || hasComment;
+      st.unanswered = !hasAnswer;
+      st.answered = hasAnswer;
     });
     return JSON.parse(JSON.stringify(window.editMaps));
   };
@@ -384,6 +519,7 @@
       wrap.className = 'editor-block';
       wrap.innerHTML = `
         <strong>${esc(m.label)}</strong>
+        ${fieldNote(m)}
         <p class="section-note">横：${esc(m.left)} ⟷ ${esc(m.right)}　／　縦：${esc(m.top)} ⟷ ${esc(m.bottom)}</p>
         <div style="display:flex;gap:8px;justify-content:center;margin:8px 0;flex-wrap:wrap;">
           <button type="button" class="btn btn-secondary btn-sm" onclick="setPlaceMode('A','${m.id}')">Aを置く</button>
@@ -561,10 +697,15 @@
       let st = (p.maps && p.maps[m.id]) || mapsData[m.id];
       if (!st && m.id === (list[0] && list[0].id) && p.posMap) st = p.posMap;
       if (!st && m.id === (list[1] && list[1].id) && p.posMap2) st = p.posMap2;
-      if (!st) st = { ax: 30, ay: 40, bx: 70, by: 60 };
-      if (st.unanswered === true) return;
+      if (!st) return; // データなし → 非表示
       const ax = st.ax != null ? st.ax : 30, ay = st.ay != null ? st.ay : 40;
       const bx = st.bx != null ? st.bx : 70, by = st.by != null ? st.by : 60;
+      const atDefault = (ax === 30 && ay === 40 && bx === 70 && by === 60);
+      const noComment = !(st.commentA || st.commentB);
+      // 移動なし・コメントなしはプレビューに出さない
+      // unanswered 明示、またはデフォルト位置＋コメントなし
+      if (st.unanswered === true || (atDefault && noComment && st.answered !== true)) return;
+      if (atDefault && noComment) return;
       const bubbleA = st.commentA ? `<div class="pos-bubble">${esc(fmt(st.commentA))}</div>` : '';
       const bubbleB = st.commentB ? `<div class="pos-bubble">${esc(fmt(st.commentB))}</div>` : '';
       const hasA = !!st.commentA, hasB = !!st.commentB;
@@ -588,6 +729,7 @@
       inner += `
         <div class="editor-block maps-preview-card">
           <strong>${esc(m.label)}</strong>
+          ${m.note ? `<p class="section-note field-note">${esc(m.note)}</p>` : ''}
           <div class="pos-map-wrap">
             <div class="pos-map-frame">
               <div class="pos-axis-label pos-axis-top">${esc(m.top)}</div>
@@ -633,6 +775,436 @@
     const d = _origDisp ? _origDisp(p) : {};
     d.mapsHtml = window.buildMapsDisplay(p);
     return d;
+  };
+
+
+
+  // ===== 基本データ・関係性（config駆動） =====
+  window.renderBasicDataEditors = function () {
+    const list = cfg().basicData || [];
+    ['A', 'B'].forEach(side => {
+      const box = document.getElementById('basicDataEditor' + side);
+      if (!box) return;
+      box.innerHTML = '';
+      const grid = document.createElement('div');
+      grid.className = 'basic-data-grid';
+      list.forEach(f => {
+        const item = document.createElement('div');
+        item.className = 'basic-data-item';
+        const id = f.id + side;
+        item.innerHTML = `<label for="${id}">${esc(f.label)}</label>${fieldNote(f)}<input type="text" id="${id}" />`;
+        grid.appendChild(item);
+      });
+      box.appendChild(grid);
+    });
+  };
+
+  window.fillBasicDataEditors = function (charA, charB) {
+    const list = cfg().basicData || [];
+    const a = charA || {}, b = charB || {};
+    list.forEach(f => {
+      const elA = document.getElementById(f.id + 'A');
+      const elB = document.getElementById(f.id + 'B');
+      let va = a[f.id], vb = b[f.id];
+      if (f.id === 'hometown') {
+        va = va || a.birthplace || a.hometown || '';
+        vb = vb || b.birthplace || b.hometown || '';
+      }
+      if (elA) elA.value = va || '';
+      if (elB) elB.value = vb || '';
+    });
+  };
+
+  window.clearBasicDataEditors = function () {
+    (cfg().basicData || []).forEach(f => {
+      const elA = document.getElementById(f.id + 'A');
+      const elB = document.getElementById(f.id + 'B');
+      if (elA) elA.value = '';
+      if (elB) elB.value = '';
+    });
+  };
+
+  window.collectBasicData = function (side) {
+    const out = {};
+    (cfg().basicData || []).forEach(f => {
+      const el = document.getElementById(f.id + side);
+      out[f.id] = el ? el.value.trim() : '';
+    });
+    return out;
+  };
+
+  window.buildBasicDataDisplay = function (character) {
+    const list = cfg().basicData || [];
+    if (!character) return '';
+    let fields = '';
+    list.forEach(f => {
+      let v = character[f.id];
+      if (f.id === 'hometown') v = v || character.birthplace || '';
+      if (!v) return;
+      fields += `<div class="basic-data-item"><div class="basic-data-label">${esc(f.label)}</div><div class="basic-data-value">${esc(v)}</div></div>`;
+    });
+    if (!fields) return '';
+    return `<details class="accordion preview basic-data-accordion" open><summary>基本データ</summary><div class="accordion-body"><div class="basic-data-grid preview-basic-data">${fields}</div></div></details>`;
+  };
+
+  window.renderRelationshipEditor = function () {
+    const box = document.getElementById('relationshipEditor');
+    if (!box) return;
+    box.innerHTML = '';
+    const list = cfg().relationship || [];
+    if (!list.length) {
+      box.innerHTML = '<p class="section-note">questions-config.js の relationship に項目を追加してください。</p>';
+      return;
+    }
+    const note = document.createElement('p');
+    note.className = 'section-note';
+    note.textContent = '空欄のままでもOKです。';
+    box.appendChild(note);
+
+    const used = new Set();
+    list.forEach(f => {
+      if (used.has(f.id)) return;
+      if (f.row) {
+        const group = list.filter(x => x.row === f.row);
+        group.forEach(x => used.add(x.id));
+        const row = document.createElement('div');
+        row.className = 'form-row';
+        group.forEach(x => {
+          const wrap = document.createElement('div');
+          const input = (x.type === 'textarea')
+            ? `<textarea id="${x.id}" placeholder="${esc(x.placeholder || '')}"></textarea>`
+            : `<input type="text" id="${x.id}" placeholder="${esc(x.placeholder || '')}" />`;
+          wrap.innerHTML = `<label>${esc(x.label)}</label>${fieldNote(x)}${input}`;
+          row.appendChild(wrap);
+        });
+        box.appendChild(row);
+        return;
+      }
+      used.add(f.id);
+      const wrap = document.createElement('div');
+      const input = (f.type === 'textarea')
+        ? `<textarea id="${f.id}" placeholder="${esc(f.placeholder || '')}"></textarea>`
+        : `<input type="text" id="${f.id}" placeholder="${esc(f.placeholder || '')}" />`;
+      wrap.innerHTML = `<label>${esc(f.label)}</label>${fieldNote(f)}${input}`;
+      box.appendChild(wrap);
+    });
+  };
+
+  window.fillRelationshipEditor = function (p) {
+    p = p || {};
+    (cfg().relationship || []).forEach(f => {
+      const el = document.getElementById(f.id);
+      if (el) el.value = p[f.id] || '';
+    });
+  };
+
+  window.clearRelationshipEditor = function () {
+    (cfg().relationship || []).forEach(f => {
+      const el = document.getElementById(f.id);
+      if (el) el.value = '';
+    });
+  };
+
+  window.collectRelationship = function () {
+    const out = {};
+    (cfg().relationship || []).forEach(f => {
+      const el = document.getElementById(f.id);
+      out[f.id] = el ? el.value.trim() : '';
+    });
+    return out;
+  };
+
+  window.buildRelationshipDisplay = function (p) {
+    const list = cfg().relationship || [];
+    if (!p) return '';
+    const show = (label, value, full) => value
+      ? `<div class="rel-item${full ? ' rel-full' : ''}"><label>${esc(label)}</label><div class="value">${esc(value)}</div></div>`
+      : '';
+    let body = '';
+    let has = false;
+    const used = new Set();
+
+    list.forEach(f => {
+      if (used.has(f.id)) return;
+      if (f.id === 'cpName') {
+        if (p.cpName) has = true;
+        used.add(f.id);
+        return;
+      }
+
+      // 同じ row の項目はプレビューでも横並び（空欄でも列位置を固定）
+      if (f.row) {
+        const group = list.filter(x => x.row === f.row);
+        group.forEach(x => used.add(x.id));
+        const any = group.some(x => p[x.id]);
+        if (!any) return;
+        has = true;
+        const cells = group.map(x => {
+          const v = p[x.id];
+          if (v) return show(x.label, v, false);
+          // 回答なしでも枠を残して左右の位置を固定
+          return `<div class="rel-item rel-item-empty" aria-hidden="true"></div>`;
+        });
+        body += `<div class="rel-pair-row">${cells.join('')}</div>`;
+        return;
+      }
+
+      used.add(f.id);
+      const v = p[f.id];
+      if (v) {
+        has = true;
+        body += show(f.label, v, !!f.full || f.type === 'textarea');
+      }
+    });
+
+    if (!has && !p.cpName) return '';
+    const title = p.cpName ? `二人の関係性：${esc(p.cpName)}` : '二人の関係性';
+    return `<details class="accordion preview" open><summary>${title}</summary><div class="accordion-body"><div class="rel-grid">${body}</div></div></details>`;
+  };
+
+
+
+  // ===== 作品紹介（config駆動） =====
+  // 作品の関係者（名前＋紹介）バッファ
+  window.editWorkRelated = [];
+
+  function newWorkRelatedId() {
+    return 'wr_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  }
+
+  window.addWorkRelated = function () {
+    if (!window.editWorkRelated) window.editWorkRelated = [];
+    window.editWorkRelated.push({ id: newWorkRelatedId(), name: '', intro: '' });
+    window.renderWorkRelatedEditor();
+  };
+
+  window.removeWorkRelated = function (id) {
+    window.editWorkRelated = (window.editWorkRelated || []).filter(x => x.id !== id);
+    window.renderWorkRelatedEditor();
+  };
+
+  window.renderWorkRelatedEditor = function () {
+    const box = document.getElementById('workRelatedEditor');
+    if (!box) return;
+    const list = window.editWorkRelated || [];
+    if (!list.length) {
+      box.innerHTML = '<p class="section-note">まだ関係者がいません。「＋ 関係者を追加」から追加できます。</p>';
+      return;
+    }
+    box.innerHTML = '';
+    list.forEach((person, idx) => {
+      const div = document.createElement('div');
+      div.className = 'editor-block';
+      div.innerHTML = `
+        <div class="editor-block-header">
+          <span class="editor-block-title">関係者 ${idx + 1}</span>
+          <button type="button" class="btn btn-danger btn-sm remove-btn" onclick="removeWorkRelated('${person.id}')">削除</button>
+        </div>
+        <label>名前</label>
+        <input type="text" data-wr-id="${person.id}" data-wr-field="name" placeholder="例：担当編集 / 友人C" value="${esc(person.name || '')}" />
+        <label>紹介</label>
+        <textarea data-wr-id="${person.id}" data-wr-field="intro" placeholder="簡単な紹介">${esc(person.intro || '')}</textarea>
+      `;
+      box.appendChild(div);
+    });
+    // 入力をバッファへ反映
+    box.querySelectorAll('[data-wr-id]').forEach(el => {
+      const sync = () => {
+        const person = (window.editWorkRelated || []).find(x => x.id === el.getAttribute('data-wr-id'));
+        if (!person) return;
+        person[el.getAttribute('data-wr-field')] = el.value;
+      };
+      el.addEventListener('input', sync);
+      el.addEventListener('change', sync);
+    });
+  };
+
+  window.renderWorkEditor = function () {
+    const box = document.getElementById('workEditor');
+    if (!box) return;
+    box.innerHTML = '';
+    const list = cfg().work || [];
+    if (!list.length) {
+      box.innerHTML = '<p class="section-note">questions-config.js の work に項目を追加してください。</p>';
+    }
+    const used = new Set();
+    list.forEach(f => {
+      if (used.has(f.id)) return;
+      if (f.row) {
+        const group = list.filter(x => x.row === f.row);
+        group.forEach(x => used.add(x.id));
+        const row = document.createElement('div');
+        row.className = 'form-row';
+        group.forEach(x => {
+          const wrap = document.createElement('div');
+          const input = (x.type === 'textarea')
+            ? `<textarea id="work_${x.id}" placeholder="${esc(x.placeholder || '')}"></textarea>`
+            : `<input type="text" id="work_${x.id}" placeholder="${esc(x.placeholder || '')}" />`;
+          wrap.innerHTML = `<label>${esc(x.label)}</label>${fieldNote(x)}${input}`;
+          row.appendChild(wrap);
+        });
+        box.appendChild(row);
+        return;
+      }
+      used.add(f.id);
+      const wrap = document.createElement('div');
+      if (f.id === 'memo') {
+        // キャラメモと同様：プレビュー表示トグル
+        const input = `<textarea id="work_${f.id}" placeholder="${esc(f.placeholder || '')}"></textarea>`;
+        wrap.innerHTML = `
+          <div class="memo-label-row">
+            <label for="work_${f.id}">${esc(f.label)}</label>
+            <label class="memo-preview-toggle"><input type="checkbox" id="work_memoVisible" checked />プレビューに表示</label>
+          </div>
+          ${fieldNote(f)}
+          ${input}
+        `;
+      } else {
+        let input;
+        if (f.type === 'textarea') {
+          input = `<textarea id="work_${f.id}" placeholder="${esc(f.placeholder || '')}"></textarea>`;
+        } else if (f.type === 'url' || f.id === 'url') {
+          input = `<input type="url" id="work_${f.id}" placeholder="${esc(f.placeholder || 'https://…')}" inputmode="url" />`;
+        } else {
+          input = `<input type="text" id="work_${f.id}" placeholder="${esc(f.placeholder || '')}" />`;
+        }
+        wrap.innerHTML = `<label>${esc(f.label)}</label>${fieldNote(f)}${input}`;
+      }
+      box.appendChild(wrap);
+    });
+
+    // 関係者（動的追加）
+    const relatedWrap = document.createElement('div');
+    relatedWrap.className = 'work-related-section';
+    relatedWrap.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin:16px 0 8px;flex-wrap:wrap;">
+        <strong style="color:var(--accent);">関係者</strong>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="addWorkRelated()">＋ 関係者を追加</button>
+      </div>
+      <p class="section-note">名前と紹介だけ。あとから何人でも追加できます。</p>
+      <div id="workRelatedEditor"></div>
+    `;
+    box.appendChild(relatedWrap);
+    window.renderWorkRelatedEditor();
+  };
+
+  window.fillWorkEditor = function (work) {
+    work = work || {};
+    (cfg().work || []).forEach(f => {
+      const el = document.getElementById('work_' + f.id);
+      if (el) el.value = work[f.id] || '';
+    });
+    const mv = document.getElementById('work_memoVisible');
+    if (mv) mv.checked = work.memoVisible !== false;
+    window.editWorkRelated = Array.isArray(work.related)
+      ? JSON.parse(JSON.stringify(work.related))
+      : [];
+    window.renderWorkRelatedEditor();
+  };
+
+  window.clearWorkEditor = function () {
+    (cfg().work || []).forEach(f => {
+      const el = document.getElementById('work_' + f.id);
+      if (el) el.value = '';
+    });
+    const mv = document.getElementById('work_memoVisible');
+    if (mv) mv.checked = true;
+    window.editWorkRelated = [];
+    window.renderWorkRelatedEditor();
+  };
+
+  window.collectWork = function () {
+    const out = {};
+    (cfg().work || []).forEach(f => {
+      const el = document.getElementById('work_' + f.id);
+      out[f.id] = el ? el.value.trim() : '';
+    });
+    const mv = document.getElementById('work_memoVisible');
+    out.memoVisible = mv ? mv.checked : true;
+    // 関係者：空の名前は除外
+    out.related = (window.editWorkRelated || [])
+      .map(x => ({
+        id: x.id || newWorkRelatedId(),
+        name: (x.name || '').trim(),
+        intro: (x.intro || '').trim()
+      }))
+      .filter(x => x.name || x.intro);
+    return out;
+  };
+
+  window.buildWorkDisplay = function (p) {
+    const list = cfg().work || [];
+    const work = (p && p.work) || {};
+    const related = Array.isArray(work.related) ? work.related : [];
+    if (!list.length && !related.length) return '';
+    const linkify = (url) => {
+      const u = String(url || '').trim();
+      if (!u) return '';
+      const href = /^https?:\/\//i.test(u) ? u : ('https://' + u);
+      // イメソン同様：URL本文は隠してボタンだけ
+      let label = 'リンクを開く';
+      const low = href.toLowerCase();
+      if (low.includes('netflix')) label = '▶ Netflixで見る';
+      else if (low.includes('amazon') || low.includes('primevideo') || low.includes('prime.video')) label = '▶ Prime Videoで見る';
+      else if (low.includes('disney')) label = '▶ Disney+で見る';
+      else if (low.includes('youtube') || low.includes('youtu.be')) label = '▶ YouTubeで見る';
+      else if (low.includes('abema')) label = '▶ ABEMAで見る';
+      else if (low.includes('hulu')) label = '▶ Huluで見る';
+      else if (low.includes('unext') || low.includes('u-next')) label = '▶ U-NEXTで見る';
+      else if (low.includes('dmm') || low.includes('d-anime')) label = '▶ 配信サイトで見る';
+      return `<div class="song-actions"><a href="${esc(href)}" target="_blank" rel="noopener noreferrer">${label}</a></div>`;
+    };
+    const show = (label, value, full, asLink) => value
+      ? `<div class="rel-item${full ? ' rel-full' : ''}"><label>${esc(label)}</label><div class="value">${asLink ? linkify(value) : esc(value)}</div></div>`
+      : '';
+    let body = '';
+    let has = false;
+    const used = new Set();
+    list.forEach(f => {
+      if (used.has(f.id)) return;
+      if (f.row) {
+        const group = list.filter(x => x.row === f.row);
+        group.forEach(x => used.add(x.id));
+        const any = group.some(x => work[x.id]);
+        if (!any) return;
+        has = true;
+        const cells = group.map(x => {
+          const v = work[x.id];
+          if (v) return show(x.label, v, false, x.type === 'url' || x.id === 'url');
+          return `<div class="rel-item rel-item-empty" aria-hidden="true"></div>`;
+        });
+        body += `<div class="rel-pair-row">${cells.join('')}</div>`;
+        return;
+      }
+      used.add(f.id);
+      const v = work[f.id];
+      if (v) {
+        // メモは「プレビューに表示」オフなら出さない
+        if (f.id === 'memo' && work.memoVisible === false) return;
+        has = true;
+        const asLink = f.type === 'url' || f.id === 'url' || f.id === 'link';
+        body += show(f.label, v, !!f.full || f.type === 'textarea', asLink);
+      }
+    });
+
+    // 関係者
+    const people = related.filter(x => x && (x.name || x.intro));
+    if (people.length) {
+      has = true;
+      let peopleHtml = '<div class="work-related-preview"><div class="label" style="margin-bottom:6px;">関係者</div>';
+      people.forEach(person => {
+        peopleHtml += `<div class="work-related-card">
+          <div class="work-related-name">${esc(person.name || '（名前なし）')}</div>
+          ${person.intro ? `<div class="work-related-intro">${esc(person.intro)}</div>` : ''}
+        </div>`;
+      });
+      peopleHtml += '</div>';
+      body += `<div class="rel-item rel-full">${peopleHtml}</div>`;
+    }
+
+    if (!has) return '';
+    const head = work.title ? `作品：${esc(work.title)}` : '作品紹介';
+    return `<details class="accordion preview" open><summary>${head}</summary><div class="accordion-body"><div class="rel-grid">${body}</div></div></details>`;
   };
 
 })();

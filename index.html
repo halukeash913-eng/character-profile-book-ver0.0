@@ -103,68 +103,20 @@
       </div>
       <label>略歴</label>
       <textarea  type="text" id="biographyA" placeholder="設定や経歴" ></textarea>
-      <section class="basic-data-group" aria-labelledby="basicDataHeadingA">
-
-
-        <h4 class="basic-data-heading" id="basicDataHeadingA">基本データ</h4>
-        <div class="basic-data-grid">
-          <!-- 項目を増やすときは basic-data-item を追加し、保存・読み込み処理にも項目をつなぎます。 -->
-           <div class="basic-data-item">
-            <label for="birthdayA">誕生日</label>
-            <input type="text" id="birthdayA" />
-          </div>
-          <div class="basic-data-item">
-            <label for="bloodTypeA">血液型</label>
-            <input type="text" id="bloodTypeA" />
-          </div>
-          <div class="basic-data-item">
-            <label for="mbtiA">MBTI</label>
-            <input type="text" id="mbtiA" />
-          </div>
-           <div class="basic-data-item">
-            <label for="eyeColorA">目の色</label>
-            <input type="text" id="eyeColorA" />
-          </div>
-          <div class="basic-data-item">
-            <label for="hairColorA">髪の色</label>
-            <input type="text" id="hairColorA" />
-          </div>
-          <div class="basic-data-item">
-            <label for="personalityA">性格・特徴</label>
-            <input type="text" id="personalityA" />
-          </div>
-          <div class="basic-data-item">
-            <label for="likesA">好きなもの</label>
-            <input type="text" id="likesA" />
-          </div>
-          <div class="basic-data-item">
-            <label for="dislikesA">嫌いなもの</label>
-            <input type="text" id="dislikesA" />
-          </div>
-            <div class="basic-data-item">
-            <label for="hobbiesA">趣味</label>
-            <input type="text" id="hobbiesA" />
-          </div>
-            <div class="basic-data-item">
-            <label for="hometownA">出身地</label>
-            <input type="text" id="hometownA" />
-          </div>
-            <div class="basic-data-item">
-            <label for="familyA">家族構成</label>
-            <input type="text" id="familyA" />
-          </div>
-            <div class="basic-data-item">
-            <label for="occupationA">職業</label>
-            <input type="text" id="occupationA" />
-          </div>
-        </div>
-      </section>
+      <details class="accordion basic-data-accordion" open>
+        <summary>基本データ</summary>
+        <div class="accordion-body" id="basicDataEditorA"></div>
+      </details>
       <label>一言紹介</label>
       <input type="text" id="catchA" />
       <label>A → B の呼び方</label>
       <input type="text" id="callAtoB"  />
+      <label>Aから見たBとの関係</label>
+      <input type="text" id="relationAtoB" />
       <label>Aから見たBへの気持ち</label>
       <input type="text" id="feelA" />
+      <label>Bのことを紹介して</label>
+      <input type="text" id="introduceB" />
 
       <details class="accordion" open>
         <summary>♡ ハート評価（A）</summary>
@@ -232,67 +184,20 @@
       </div>
       <label>略歴</label>
       <textarea id="biographyB" placeholder="設定や経歴"></textarea>
-      <section class="basic-data-group" aria-labelledby="basicDataHeadingB">
-        <h4 class="basic-data-heading" id="basicDataHeadingB">基本データ</h4>
-        <div class="basic-data-grid">
-          <!-- 項目を増やすときは basic-data-item を追加し、保存・読み込み処理にも項目をつなぎます。 -->
-             <div class="basic-data-item">
-            <label for="birthdayB">誕生日</label>
-            <input type="text" id="birthdayB" />
-          </div>
-          <div class="basic-data-item">
-            <label for="bloodTypeB">血液型</label>
-            <input type="text" id="bloodTypeB" />
-          </div>
-          <div class="basic-data-item">
-            <label for="mbtiB">MBTI</label>
-            <input type="text" id="mbtiB" />
-          </div>
-           <div class="basic-data-item">
-            <label for="eyeColorB">目の色</label>
-            <input type="text" id="eyeColorB" />
-          </div>
-          <div class="basic-data-item">
-            <label for="hairColorB">髪の色</label>
-            <input type="text" id="hairColorB" />
-          </div>
-          <div class="basic-data-item">
-            <label for="personalityB">性格・特徴</label>
-            <input type="text" id="personalityB" />
-          </div>
-          <div class="basic-data-item">
-            <label for="likesB">好きなもの</label>
-            <input type="text" id="likesB" />
-          </div>
-          <div class="basic-data-item">
-            <label for="dislikesB">嫌いなもの</label>
-            <input type="text" id="dislikesB" />
-          </div>
-                    <div class="basic-data-item">
-            <label for="hobbiesB">趣味</label>
-            <input type="text" id="hobbiesB" />
-          </div>
-            <div class="basic-data-item">
-            <label for="hometownB">出身地</label>
-            <input type="text" id="hometownB" />
-          </div>
-            <div class="basic-data-item">
-            <label for="familyB">家族構成</label>
-            <input type="text" id="familyB" />
-          </div>
-            <div class="basic-data-item">
-            <label for="occupationB">職業</label>
-            <input type="text" id="occupationB" />
-          </div>
-          
-        </div>
-      </section>
+      <details class="accordion basic-data-accordion" open>
+        <summary>基本データ</summary>
+        <div class="accordion-body" id="basicDataEditorB"></div>
+      </details>
       <label>一言紹介</label>
       <input type="text" id="catchB" />
       <label>B → A の呼び方</label>
       <input type="text" id="callBtoA" />
+      <label>Bから見たAとの関係</label>
+      <input type="text" id="relationBtoA" />
       <label>Bから見たAへの気持ち</label>
       <input type="text" id="feelB" />
+      <label>Aのことを紹介して</label>
+      <input type="text" id="introduceA" />
 
       <details class="accordion" open>
         <summary>♡ ハート評価（B）</summary>
@@ -323,54 +228,15 @@
       <details class="accordion" open>
         <summary>二人の関係性</summary>
         <div class="accordion-body">
-          <p class="section-note">空欄のままでもOKです。</p>
-          <label>CP名（任意）</label>
-          <input type="text" id="cpName" placeholder="例：AB / A + B" />
-          <label>関係性タグ（カンマ区切り可）</label>
-          <input type="text" id="relTags" placeholder="例：幼馴染, 両片想い, すれ違い" />
-          <label>出会い</label>
-          <textarea id="narestome" placeholder="例：転校初日に席が隣だった…"></textarea>
-          <label>現在の距離感</label>
-          <input type="text" id="distance" placeholder="例：両片想い / 恋人未満" />
-          <div class="form-row">
-              <div>
-              <label>Bの第一印象</label>
-              <textarea id="FirstImpressionOfB" ></textarea>
-            </div>
-            <div>
-              <label>Aの第一印象</label>
-              <textarea id="FirstImpressionOfA" ></textarea>
-            </div>
-            <div>
-              <label>AがBの好きなところ</label>
-              <textarea id="likeAtoB" ></textarea>
-            </div>
-            <div>
-              <label>BがAの好きなところ</label>
-              <textarea id="likeBtoA" ></textarea>
-            </div>
-            <div>
-              <label>AがBへの好意を自覚した瞬間</label>
-              <textarea id="RealizeLoveAtoB" ></textarea>
-            </div>
-            <div>
-              <label>BがAへの好意を自覚した瞬間</label>
-              <textarea id="RealizeLoveBtoA" ></textarea>
-            </div>
-                        <div>
-              <label>Bが道を踏み外したら</label>
-              <textarea id="BStepsOffPath" ></textarea>
-            </div>
-            <div>
-              <label>Aが道を踏み外したら</label>
-              <textarea id="AStepsOffPath" ></textarea>
-            </div>
+          <div id="relationshipEditor"></div>
+        </div>
+      </details>
 
-          </div>
-          <label>好きなシチュエーション・萌ポイント</label>
-          <textarea id="situation" placeholder="例：雨の日の相合い傘、喧嘩の後の仲直り"></textarea>
-          <label>二人の記念日</label>
-          <input type="text" id="anniversary" placeholder="例：初めて一緒に帰った日" />
+      <details class="accordion" open>
+        <summary>作品紹介</summary>
+        <div class="accordion-body">
+          <p class="section-note">作品単位で二人を紹介できます。シリーズはタイトル横にも表示されます。</p>
+          <div id="workEditor"></div>
         </div>
       </details>
 
@@ -387,31 +253,36 @@
 
       <h3>二人の質問・マップ</h3>
 
-<details class="accordion" open>
-        <summary>A / B 質問</summary>
-        <div class="accordion-body" id="abEditor"></div>
-      </details>
+      <details class="accordion" open>
+              <summary>A / B 質問</summary>
+              <div class="accordion-body" id="abEditor"></div>
+            </details>
 
-            <details class="accordion" open>
-        <summary>ポジショニングマップ</summary>
-        <div class="accordion-body" id="mapsEditor"></div>
-      </details>
+                  <details class="accordion" open>
+              <summary>ポジショニングマップ</summary>
+              <div class="accordion-body" id="mapsEditor"></div>
+            </details>
 
-<details class="accordion" open>
-        <summary>好きなシーン写真</summary>
-        <div class="accordion-body">
-          <p class="section-note">画像とタイトル・説明を登録できます。左上の⠿をドラッグすると順番を入れ替えられます。</p>
-          <div style="display:flex; justify-content:flex-end; margin-bottom:8px;">
-            <button type="button" class="btn btn-secondary btn-sm" onclick="addScene()">＋ シーンを追加</button>
-          </div>
-          <div id="scenesEditor"></div>
-        </div>
+      <details class="accordion" open>
+              <summary>好きなシーン写真</summary>
+              <div class="accordion-body">
+                <p class="section-note">画像とタイトル・説明を登録できます。左上の⠿をドラッグすると順番を入れ替えられます。</p>
+                <div style="display:flex; justify-content:flex-end; margin-bottom:8px;">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="addScene()">＋ シーンを追加</button>
+                </div>
+                <div id="scenesEditor"></div>
+              </div>
+            </details>
+
+      <details class="accordion" open>
+                <summary>こんな世界なら？</summary>
+                <div class="accordion-body" id="worldlinesEditor"></div>
       </details>
 
       <details class="accordion" open>
-        <summary>〇〇の時は？ / 深掘り</summary>
-        <div class="accordion-body" id="deepDiveEditor"></div>
-      </details>
+              <summary>〇〇の時は？ / 深掘り</summary>
+              <div class="accordion-body" id="deepDiveEditor"></div>
+            </details>
 
       <div class="modal-actions">
         <button class="btn btn-secondary" onclick="closePairModal()">キャンセル</button>
@@ -919,32 +790,16 @@ ${css}
       const cls = computeBubbleClasses(ax, ay, bx, by, hasA, hasB);
       if (hasA && wrapA) cls.A.forEach(c => wrapA.classList.add(c));
       if (hasB && wrapB) cls.B.forEach(c => wrapB.classList.add(c));
-      layoutMobileMapBubbles((wrapA || wrapB)?.closest('.pos-map'));
+      layoutMapBubbles((wrapA || wrapB)?.closest('.pos-map'));
     }
 
-    function layoutMobileMapBubbles(map) {
+    function layoutMapBubbles(map) {
       if (!map) return;
+      const isMobile = window.matchMedia('(max-width: 700px)').matches;
       const bubbles = [
         ...Array.from(map.querySelectorAll('.pos-marker-wrap')).map(wrap => ({ wrap, bubble: wrap.querySelector('.pos-bubble') })),
       ].filter(item => item.wrap && item.bubble && getComputedStyle(item.bubble).display !== 'none');
-      if (!window.matchMedia('(max-width: 700px)').matches) {
-        map.classList.remove('mobile-bubbles-laid-out');
-        map.querySelectorAll('.pos-bubble').forEach(bubble => {
-          bubble.style.left = '';
-          bubble.style.top = '';
-          bubble.style.right = '';
-          bubble.style.bottom = '';
-          bubble.style.transform = '';
-          bubble.style.maxWidth = '';
-          bubble.style.maxHeight = '';
-          bubble.style.overflowY = '';
-          bubble.style.whiteSpace = '';
-          bubble.style.overflowWrap = '';
-        });
-        return;
-      }
-
-      map.classList.add('mobile-bubbles-laid-out');
+      map.classList.add('bubbles-laid-out');
       const mapRect = map.getBoundingClientRect();
       const contentLeft = mapRect.left + map.clientLeft;
       const contentTop = mapRect.top + map.clientTop;
@@ -960,9 +815,13 @@ ${css}
         bubble.style.right = 'auto';
         bubble.style.bottom = 'auto';
         bubble.style.transform = 'none';
-        bubble.style.maxWidth = `${Math.max(48, Math.min(width - 16, width * 0.56))}px`;
-        bubble.style.maxHeight = `${Math.max(32, height * 0.42)}px`;
-        bubble.style.overflowY = 'auto';
+        bubble.style.maxWidth = `${Math.max(48, Math.min(width - 8, isMobile ? width * 0.56 : 13 * 16))}px`;
+        bubble.style.maxHeight = `${Math.max(36, Math.min(height * 0.42, 7.5 * 16))}px`;
+        bubble.style.overflow = 'hidden';
+        bubble.style.overflowY = 'hidden';
+        bubble.style.cursor = 'default';
+        bubble.style.userSelect = 'none';
+        bubble.style.pointerEvents = 'none';
         bubble.style.whiteSpace = 'pre-wrap';
         bubble.style.overflowWrap = 'anywhere';
         const bubbleRect = bubble.getBoundingClientRect();
@@ -982,6 +841,11 @@ ${css}
         };
       });
 
+      // コメントが一方もない場合は、吹き出し配置の計算を行わず終了する。
+      // ここで returnしないと entries=0 のとき options[0].forEach が例外になり、
+      // 続くポジショニングマップの生成が止まる。
+      if (entries.length === 0) return;
+
       const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
       const overlap = (a, b) => {
         const w = Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x));
@@ -992,16 +856,20 @@ ${css}
         const m = entry.marker;
         const cx = m.x + m.w / 2;
         const cy = m.y + m.h / 2;
-        const gap = 5;
+        const gap = 6;
         const raw = [
           { x: cx - entry.w / 2, y: m.y - entry.h - gap },
           { x: cx - entry.w / 2, y: m.y + m.h + gap },
           { x: m.x - entry.w - gap, y: cy - entry.h / 2 },
           { x: m.x + m.w + gap, y: cy - entry.h / 2 },
-          { x: m.x - entry.w * 0.72, y: m.y - entry.h - gap },
-          { x: m.x + m.w - entry.w * 0.28, y: m.y - entry.h - gap },
-          { x: m.x - entry.w * 0.72, y: m.y + m.h + gap },
-          { x: m.x + m.w - entry.w * 0.28, y: m.y + m.h + gap },
+          { x: m.x - entry.w * 0.85, y: m.y - entry.h - gap },
+          { x: m.x + m.w - entry.w * 0.15, y: m.y - entry.h - gap },
+          { x: m.x - entry.w * 0.85, y: m.y + m.h + gap },
+          { x: m.x + m.w - entry.w * 0.15, y: m.y + m.h + gap },
+          { x: m.x - entry.w - gap, y: m.y - entry.h - gap },
+          { x: m.x + m.w + gap, y: m.y - entry.h - gap },
+          { x: m.x - entry.w - gap, y: m.y + m.h + gap },
+          { x: m.x + m.w + gap, y: m.y + m.h + gap },
         ];
         return raw.map(pos => {
           const x = clamp(pos.x, 4, Math.max(4, width - entry.w - 4));
@@ -1009,7 +877,7 @@ ${css}
           const box = { x, y, w: entry.w, h: entry.h };
           const markerOverlap = entries.reduce((sum, other) => sum + overlap(box, other.marker), 0);
           const clampDistance = Math.abs(x - pos.x) + Math.abs(y - pos.y);
-          return { ...box, score: markerOverlap * 1000 + clampDistance };
+          return { ...box, score: markerOverlap * 2500 + clampDistance };
         });
       };
 
@@ -1019,7 +887,7 @@ ${css}
         best = [options[0].reduce((a, b) => b.score < a.score ? b : a)];
       } else {
         options[0].forEach(a => options[1].forEach(b => {
-          const score = a.score + b.score + overlap(a, b) * 1500;
+          const score = a.score + b.score + overlap(a, b) * 4000;
           if (!best || score < best.score) best = { score, positions: [a, b] };
         }));
         best = best && best.positions;
@@ -1042,7 +910,7 @@ ${css}
     window.formatBubbleText = formatBubbleText;
     window.addEventListener('resize', () => {
       requestAnimationFrame(() => {
-        document.querySelectorAll('.pos-map').forEach(layoutMobileMapBubbles);
+        document.querySelectorAll('.pos-map').forEach(layoutMapBubbles);
       });
     });
 
@@ -1293,24 +1161,7 @@ ${css}
 
         const show = (label, value) => value ? `<div class="rel-item"><label>${label}</label><div class="value">${escapeHtml(value)}</div></div>` : '';
         const showFull = (label, value) => value ? `<div class="rel-item rel-full"><label>${label}</label><div class="value">${escapeHtml(value)}</div></div>` : '';
-        const renderBasicData = character => {
-          const fields = [
-            ['誕生日', character.birthday],
-            ['血液型', character.bloodType],
-            ['MBTI', character.mbti],
-            ['目の色', character.eyeColor],
-            ['髪の色', character.hairColor],
-            ['性格・特徴', character.personality],
-            ['好きなもの', character.likes],
-            ['嫌いなもの', character.dislikes],
-            ['趣味・特技', character.hobbies],
-            ['家族構成', character.family],
-            ['出身地', character.birthplace],
-            ['職業・学歴', character.occupation],
-          ].filter(([, value]) => value);
-          if (!fields.length) return '';
-          return `<section class="basic-data-group preview-basic-data"><h4 class="basic-data-heading">基本データ</h4><div class="basic-data-grid">${fields.map(([label, value]) => `<div class="basic-data-item"><span class="basic-data-label">${label}</span><div class="basic-data-value">${escapeHtml(value)}</div></div>`).join('')}</div></section>`;
-        };
+        const renderBasicData = character => (typeof buildBasicDataDisplay === 'function' ? buildBasicDataDisplay(character) : '');
 
         // キャラ下の♡とYES/NO
         const _qd = (typeof buildQuestionsDisplay === 'function') ? buildQuestionsDisplay(p) : {
@@ -1323,6 +1174,7 @@ ${css}
         const trustBlockA = '', trustBlockB = '', shoulderBlockA = '', shoulderBlockB = '';
         const apoHtml = _qd.abHtml || '';
         const deepHtml = _qd.deepHtml || '';
+        const worldlinesHtml = _qd.worldlinesHtml || '';
 
 
         let scenesHtml = '';
@@ -1342,6 +1194,7 @@ ${css}
         card.innerHTML = `
           <summary class="pair-header">
             <div class="pair-title">${escapeHtml(title)}
+              ${(p.work && p.work.series)?`<span class="diff-badge series-badge">${escapeHtml(p.work.series)}</span>`:''}
               ${ageDiff?`<span class="diff-badge">年齢差 ${ageDiff}</span>`:''}
               ${heightDiff?`<span class="diff-badge">身長差 ${heightDiff}</span>`:''}
             </div>
@@ -1362,12 +1215,15 @@ ${css}
               <div class="char-name">${p.charA.emoji ? p.charA.emoji + ' ' : ''}${escapeHtml(p.charA.name)}</div>
               ${metaA?`<div class="char-meta">${escapeHtml(metaA)}</div>`:''}
               ${p.charA.catch?`<div class="char-catch">「${escapeHtml(p.charA.catch)}」</div>`:''}
+              ${p.charA.biography?`<div class="char-biography">${escapeHtml(p.charA.biography)}</div>`:''}
               ${renderBasicData(p.charA)}
               <div class="char-detail">
                 ${p.charA.memoVisible !== false && p.charA.memo?`<div>メモ：${escapeHtml(p.charA.memo)}</div>`:''}
               </div>
               ${p.callAtoB?`<div class="char-feel"><div class="label">呼び方 → ${escapeHtml(p.charB.name)}</div>${escapeHtml(p.callAtoB)}</div>`:''}
+              ${p.relationAtoB?`<div class="char-feel"><div class="label">関係 → ${escapeHtml(p.charB.name)}</div>${escapeHtml(p.relationAtoB)}</div>`:''}
               ${p.feelA?`<div class="char-feel"><div class="label">気持ち → ${escapeHtml(p.charB.name)}</div>${escapeHtml(p.feelA)}</div>`:''}
+              ${p.introduceB?`<div class="char-feel"><div class="label">紹介 → ${escapeHtml(p.charB.name)}</div>${escapeHtml(p.introduceB)}</div>`:''}
               ${loveBlockA}
               ${trustBlockA}
               ${lieBlockA}
@@ -1383,12 +1239,15 @@ ${css}
               <div class="char-name">${p.charB.emoji ? p.charB.emoji + ' ' : ''}${escapeHtml(p.charB.name)}</div>
               ${metaB?`<div class="char-meta">${escapeHtml(metaB)}</div>`:''}
               ${p.charB.catch?`<div class="char-catch">「${escapeHtml(p.charB.catch)}」</div>`:''}
+              ${p.charB.biography?`<div class="char-biography">${escapeHtml(p.charB.biography)}</div>`:''}
               ${renderBasicData(p.charB)}
               <div class="char-detail">
                 ${p.charB.memoVisible !== false && p.charB.memo?`<div>メモ：${escapeHtml(p.charB.memo)}</div>`:''}
               </div>
               ${p.callBtoA?`<div class="char-feel"><div class="label">呼び方 → ${escapeHtml(p.charA.name)}</div>${escapeHtml(p.callBtoA)}</div>`:''}
+              ${p.relationBtoA?`<div class="char-feel"><div class="label">関係 → ${escapeHtml(p.charA.name)}</div>${escapeHtml(p.relationBtoA)}</div>`:''}
               ${p.feelB?`<div class="char-feel"><div class="label">気持ち → ${escapeHtml(p.charA.name)}</div>${escapeHtml(p.feelB)}</div>`:''}
+              ${p.introduceA?`<div class="char-feel"><div class="label">紹介 → ${escapeHtml(p.charA.name)}</div>${escapeHtml(p.introduceA)}</div>`:''}
               ${loveBlockB}
               ${trustBlockB}
               ${lieBlockB}
@@ -1397,46 +1256,27 @@ ${css}
             </div>
           </div>
 
-          ${(p.relTags||p.distance||p.narestome||p.FirstImpressionOfA||p.FirstImpressionOfB||p.likeAtoB||p.likeBtoA||p.RealizeLoveAtoB||p.RealizeLoveBtoA||p.AStepsOffPath||p.BStepsOffPath||p.situation||p.anniversary||p.cpName)?`
-          <details class="accordion preview" open>
-            <summary>二人の関係性${p.cpName?`：${escapeHtml(p.cpName)}`:''}</summary>
-            <div class="accordion-body">
-              <div class="rel-grid">
-                ${show('関係性タグ', p.relTags)}
-                ${show('現在の距離感', p.distance)}
-                ${showFull('馴れ初め', p.narestome)}
-                ${show('Aの第一印象', p.FirstImpressionOfA)}
-                ${show('Bの第一印象', p.FirstImpressionOfB)}
-                ${show('AがBの好きなところ', p.likeAtoB)}
-                ${show('BがAの好きなところ', p.likeBtoA)}
-                ${show('AがBに恋愛感情を自覚したきっかけ', p.RealizeLoveAtoB)}
-                ${show('BがAに恋愛感情を自覚したきっかけ', p.RealizeLoveBtoA)}
-                ${show('Aが道を踏み外したら', p.AStepsOffPath)}
-                ${show('Bが道を踏み外したら', p.BStepsOffPath)}
-                ${showFull('好きなシチュ・萌ポイント', p.situation)}
-                ${show('二人の記念日', p.anniversary)}
-              </div>
-            </div>
-          </details>`:''}
+          ${(typeof buildWorkDisplay === 'function' ? buildWorkDisplay(p) : '')}
+          ${(typeof buildRelationshipDisplay === 'function' ? buildRelationshipDisplay(p) : '')}
           ${p.coupleSongs&&p.coupleSongs.length?`<details class="accordion preview" open><summary>カプのイメージソング</summary><div class="accordion-body">${renderSongDisplay(p.coupleSongs)}</div></details>`:''}
 
           ${apoHtml}
           ${_qd.mapsHtml || (typeof buildMapsDisplay==='function' ? buildMapsDisplay(p) : '')}
           ${scenesHtml}
-
+          ${worldlinesHtml}
           ${deepHtml}
           </div>
         `;
         list.appendChild(card);
         card.addEventListener('toggle', () => {
-          if (card.open) requestAnimationFrame(() => card.querySelectorAll('.pos-map').forEach(layoutMobileMapBubbles));
+          if (card.open) requestAnimationFrame(() => card.querySelectorAll('.pos-map').forEach(layoutMapBubbles));
         });
         card.querySelectorAll('.accordion.preview').forEach(section => {
           section.addEventListener('toggle', () => {
-            if (section.open) requestAnimationFrame(() => section.querySelectorAll('.pos-map').forEach(layoutMobileMapBubbles));
+            if (section.open) requestAnimationFrame(() => section.querySelectorAll('.pos-map').forEach(layoutMapBubbles));
           });
         });
-        card.querySelectorAll('.pos-map').forEach(layoutMobileMapBubbles);
+        card.querySelectorAll('.pos-map').forEach(layoutMapBubbles);
       });
     }
 
@@ -1466,21 +1306,11 @@ ${css}
         document.getElementById('heightA').value = p.charA.height||'';
         document.getElementById('maleA').value = p.charA.male||'';
         document.getElementById('biographyA').value = p.charA.biography||'';
-        document.getElementById('birthdayA').value = p.charA.birthday||''; 
-        document.getElementById('bloodTypeA').value = p.charA.bloodType||'';     
-        document.getElementById('mbtiA').value = p.charA.mbti||''; 
-        document.getElementById('eyeColorA').value = p.charA.eyeColor||'';
-        document.getElementById('hairColorA').value = p.charA.hairColor||'';
-        document.getElementById('personalityA').value = p.charA.personality||'';
-        document.getElementById('likesA').value = p.charA.likes||'';
-        document.getElementById('dislikesA').value = p.charA.dislikes||'';
-        document.getElementById('hobbiesA').value = p.charA.hobbies||'';
-        document.getElementById('hometownA').value = p.charA.hometown||'';
-        document.getElementById('familyA').value = p.charA.family||'';
-        document.getElementById('occupationA').value = p.charA.occupation||'';
         document.getElementById('catchA').value = p.charA.catch||'';
         document.getElementById('callAtoB').value = p.callAtoB||'';
+        document.getElementById('relationAtoB').value = p.relationAtoB||'';
         document.getElementById('feelA').value = p.feelA||'';
+        document.getElementById('introduceB').value = p.introduceB||'';
         document.getElementById('memoA').value = p.charA.memo||'';
         document.getElementById('memoPreviewA').checked = p.charA.memoVisible !== false;
         tempImageA = p.charA.image||'';
@@ -1494,41 +1324,16 @@ ${css}
         document.getElementById('heightB').value = p.charB.height||'';
         document.getElementById('maleB').value = p.charB.male||'';
         document.getElementById('biographyB').value = p.charB.biography||'';
-        document.getElementById('birthdayB').value = p.charB.birthday||''; 
-        document.getElementById('bloodTypeB').value = p.charB.bloodType||''; 
-        document.getElementById('mbtiB').value = p.charB.mbti||''; 
-        document.getElementById('eyeColorB').value = p.charB.eyeColor||'';
-        document.getElementById('hairColorB').value = p.charB.hairColor||'';
-        document.getElementById('personalityB').value = p.charB.personality||'';
-        document.getElementById('likesB').value = p.charB.likes||'';
-        document.getElementById('dislikesB').value = p.charB.dislikes||'';
-        document.getElementById('hobbiesB').value = p.charB.hobbies||'';
-        document.getElementById('hometownB').value = p.charB.hometown||'';
-        document.getElementById('familyB').value = p.charB.family||'';
-        document.getElementById('occupationB').value = p.charB.occupation||'';
         document.getElementById('catchB').value = p.charB.catch||'';
         document.getElementById('callBtoA').value = p.callBtoA||'';
+        document.getElementById('relationBtoA').value = p.relationBtoA||'';
         document.getElementById('feelB').value = p.feelB||'';
+        document.getElementById('introduceA').value = p.introduceA||'';
         document.getElementById('memoB').value = p.charB.memo||'';
         document.getElementById('memoPreviewB').checked = p.charB.memoVisible !== false;
         tempImageB = p.charB.image||'';
         setPreview('previewB', tempImageB, 'B');
         tempSongsB = JSON.parse(JSON.stringify(p.charB.songs||[]));
-
-        document.getElementById('cpName').value = p.cpName||'';
-        document.getElementById('relTags').value = p.relTags||'';
-        document.getElementById('narestome').value = p.narestome||'';
-        document.getElementById('distance').value = p.distance||'';
-        document.getElementById('likeAtoB').value = p.likeAtoB||'';
-        document.getElementById('likeBtoA').value = p.likeBtoA||'';
-        document.getElementById('RealizeLoveAtoB').value = p.RealizeLoveAtoB||'';
-        document.getElementById('RealizeLoveBtoA').value = p.RealizeLoveBtoA||'';
-        document.getElementById('AStepsOffPath').value = p.AStepsOffPath||'';
-        document.getElementById('BStepsOffPath').value = p.BStepsOffPath||'';
-        document.getElementById('FirstImpressionOfA').value = p.FirstImpressionOfA||'';
-        document.getElementById('FirstImpressionOfB').value = p.FirstImpressionOfB||'';
-        document.getElementById('situation').value = p.situation||'';
-        document.getElementById('anniversary').value = p.anniversary||'';
         tempSongsCouple = JSON.parse(JSON.stringify(p.coupleSongs||[]));
         tempScenes = JSON.parse(JSON.stringify(p.scenes||[]));
 
@@ -1545,10 +1350,8 @@ ${css}
         const labelA = p.charA.emoji || (p.charA.name && p.charA.name.length > 6 ? p.charA.name.slice(0,5)+'…' : (p.charA.name || 'A'));
         const labelB = p.charB.emoji || (p.charB.name && p.charB.name.length > 6 ? p.charB.name.slice(0,5)+'…' : (p.charB.name || 'B'));
       } else {
-        ['nameA','emojiA','ageA','heightA','maleA','biographyA','birthdayA','bloodTypeA','mbtiA','eyeColorA','hairColorA','personalityA','likesA','dislikesA','occupationA','hobbiesA','hometownA','catchA','callAtoB','feelA','memoA',
-         'nameB','emojiB','ageB','heightB','maleB','biographyB','birthdayB','bloodTypeB','mbtiB','eyeColorB','hairColorB','personalityB','likesB','dislikesB','occupationB','hobbiesB','hometownB','catchB','callBtoA','feelB','memoB',
-         'cpName','relTags','narestome','distance','FirstImpressionOfA','FirstImpressionOfB','likeAtoB','likeBtoA','RealizeLoveAtoB','RealizeLoveBtoA','AStepsOffPath','BStepsOffPath','situation','anniversary',
-         /* deepDive is config-driven */
+        ['nameA','emojiA','ageA','heightA','maleA','biographyA','catchA','callAtoB','feelA','memoA','relationAtoB','introduceB',
+         'nameB','emojiB','ageB','heightB','maleB','biographyB','catchB','callBtoA','feelB','memoB','relationBtoA','introduceA',
         ].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
         document.getElementById('colorA').value = '#a78bfa';
         document.getElementById('colorB').value = '#f472b6';
@@ -1559,16 +1362,31 @@ ${css}
       renderLoveHearts();
       renderScenesEditor();
       document.getElementById('pairModal').classList.add('show');
-      // 質問UI（config駆動）
+      // 質問・基本データ・関係性（config駆動）
       try {
+        if (typeof renderBasicDataEditors === 'function') renderBasicDataEditors();
+        if (typeof renderRelationshipEditor === 'function') renderRelationshipEditor();
+        if (typeof renderWorkEditor === 'function') renderWorkEditor();
         if (id) {
           const p = data.pairs.find(x => x.id === id);
-          if (p) loadQuestionBuffersFromPair(p);
-          else resetQuestionBuffers();
+          if (p) {
+            if (typeof loadQuestionBuffersFromPair === 'function') loadQuestionBuffersFromPair(p);
+            if (typeof fillBasicDataEditors === 'function') fillBasicDataEditors(p.charA, p.charB);
+            if (typeof fillRelationshipEditor === 'function') fillRelationshipEditor(p);
+            if (typeof fillWorkEditor === 'function') fillWorkEditor(p.work);
+          } else {
+            if (typeof resetQuestionBuffers === 'function') resetQuestionBuffers();
+            if (typeof clearBasicDataEditors === 'function') clearBasicDataEditors();
+            if (typeof clearRelationshipEditor === 'function') clearRelationshipEditor();
+            if (typeof clearWorkEditor === 'function') clearWorkEditor();
+          }
         } else {
-          resetQuestionBuffers();
+          if (typeof resetQuestionBuffers === 'function') resetQuestionBuffers();
+          if (typeof clearBasicDataEditors === 'function') clearBasicDataEditors();
+          if (typeof clearRelationshipEditor === 'function') clearRelationshipEditor();
+          if (typeof clearWorkEditor === 'function') clearWorkEditor();
         }
-        renderQuestionEditors();
+        if (typeof renderQuestionEditors === 'function') renderQuestionEditors();
       } catch (e) { console.warn(e); }
     }
 
@@ -1604,22 +1422,11 @@ ${css}
           height: document.getElementById('heightA').value.trim(),
           male: document.getElementById('maleA').value.trim(),
           biography: document.getElementById('biographyA').value.trim(),
-          personality: document.getElementById('personalityA').value.trim(),
-          birthday: document.getElementById('birthdayA').value.trim(),
-          bloodType: document.getElementById('bloodTypeA').value.trim(),
-          mbti: document.getElementById('mbtiA').value.trim(),
-          eyeColor: document.getElementById('eyeColorA').value.trim(),
-          hairColor: document.getElementById('hairColorA').value.trim(),
-          likes: document.getElementById('likesA').value.trim(),
-          dislikes: document.getElementById('dislikesA').value.trim(),
-          hobbies: document.getElementById('hobbiesA').value.trim(),
-          hometown: document.getElementById('hometownA').value.trim(),
-          family: document.getElementById('familyA').value.trim(),
-          occupation: document.getElementById('occupationA').value.trim(),
           catch: document.getElementById('catchA').value.trim(),
           memo: document.getElementById('memoA').value.trim(),
           memoVisible: document.getElementById('memoPreviewA').checked,
-          songs: JSON.parse(JSON.stringify(tempSongsA))
+          songs: JSON.parse(JSON.stringify(tempSongsA)),
+          ...(typeof collectBasicData === 'function' ? collectBasicData('A') : {})
         },
         charB: {
           name: nameB,
@@ -1630,62 +1437,40 @@ ${css}
           height: document.getElementById('heightB').value.trim(),
           male: document.getElementById('maleB').value.trim(),
           biography: document.getElementById('biographyB').value.trim(),
-          personality: document.getElementById('personalityB').value.trim(),
-          birthday: document.getElementById('birthdayB').value.trim(),
-          bloodType: document.getElementById('bloodTypeB').value.trim(),
-          mbti: document.getElementById('mbtiB').value.trim(),
-          eyeColor: document.getElementById('eyeColorB').value.trim(),
-          hairColor: document.getElementById('hairColorB').value.trim(),
-          likes: document.getElementById('likesB').value.trim(),
-          dislikes: document.getElementById('dislikesB').value.trim(),
-          hobbies: document.getElementById('hobbiesB').value.trim(),
-          hometown: document.getElementById('hometownB').value.trim(),
-          family: document.getElementById('familyB').value.trim(),
-          occupation: document.getElementById('occupationB').value.trim(),
           catch: document.getElementById('catchB').value.trim(),
           memo: document.getElementById('memoB').value.trim(),
           memoVisible: document.getElementById('memoPreviewB').checked,
-          songs: JSON.parse(JSON.stringify(tempSongsB))
+          songs: JSON.parse(JSON.stringify(tempSongsB)),
+          ...(typeof collectBasicData === 'function' ? collectBasicData('B') : {})
         },
-        cpName: document.getElementById('cpName').value.trim(),
+        cpName: '',
         callAtoB: document.getElementById('callAtoB').value.trim(),
         callBtoA: document.getElementById('callBtoA').value.trim(),
+        relationAtoB: document.getElementById('relationAtoB').value.trim(),
+        relationBtoA: document.getElementById('relationBtoA').value.trim(),
         feelA: document.getElementById('feelA').value.trim(),
         feelB: document.getElementById('feelB').value.trim(),
-        relTags: document.getElementById('relTags').value.trim(),
-        narestome: document.getElementById('narestome').value.trim(),
-        distance: document.getElementById('distance').value.trim(),
-        FirstImpressionOfA: document.getElementById('FirstImpressionOfA').value.trim(),
-        FirstImpressionOfB: document.getElementById('FirstImpressionOfB').value.trim(),
-        likeAtoB: document.getElementById('likeAtoB').value.trim(),
-        likeBtoA: document.getElementById('likeBtoA').value.trim(),
-        RealizeLoveAtoB: document.getElementById('RealizeLoveAtoB').value.trim(),
-        RealizeLoveBtoA: document.getElementById('RealizeLoveBtoA').value.trim(),
-        AStepsOffPath: document.getElementById('AStepsOffPath').value.trim(),
-        BStepsOffPath: document.getElementById('BStepsOffPath').value.trim(),
-        situation: document.getElementById('situation').value.trim(),
-        anniversary: document.getElementById('anniversary').value.trim(),
+        introduceB: document.getElementById('introduceB').value.trim(),
+        introduceA: document.getElementById('introduceA').value.trim(),
         coupleSongs: JSON.parse(JSON.stringify(tempSongsCouple)),
         loveA, loveB,
         trustA, trustB,
-        lieCommentA: val('lieCommentA'),
-        lieCommentB: val('lieCommentB'),
-        shoulderA: document.querySelector('input[name="shoulderA"]:checked')?.value || '',
-        shoulderB: document.querySelector('input[name="shoulderB"]:checked')?.value || '',
-        shoulderCommentA: val('shoulderCommentA'),
-        shoulderCommentB: val('shoulderCommentB'),
-        apologizeComment: val('apologizeComment'),
-        firstLove: document.querySelector('input[name="firstLove"]:checked')?.value || '',
-        firstLoveComment: val('firstLoveComment'),
         // maps: collectQuestionsForSave() で付与
         scenes: JSON.parse(JSON.stringify(tempScenes)),
       };
+      if (typeof collectRelationship === 'function') {
+        Object.assign(pair, collectRelationship());
+      }
+      if (typeof collectWork === 'function') {
+        pair.work = collectWork();
+      }
       try {
         const q = collectQuestionsForSave();
         pair.hearts = q.hearts;
         pair.yesNo = q.yesNo;
         pair.ab = q.ab;
         pair.deepDive = q.deepDive;
+        pair.worldlines = q.worldlines || {};
         pair.maps = q.maps || {};
         // 旧形式互換（先頭2つ）
         const mapIds = (window.QUESTIONS_CONFIG && window.QUESTIONS_CONFIG.maps || []).map(m => m.id);

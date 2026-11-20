@@ -215,6 +215,27 @@
     .char-name { font-size: 1.15rem; font-weight: 700; text-align: center; margin-bottom: 4px; }
     .char-meta { font-size: 0.85rem; color: var(--text-muted); text-align: center; margin-bottom: 8px; }
     .char-catch { font-size: 0.9rem; font-style: italic; text-align: center; margin-bottom: 10px; }
+    .char-biography {
+      margin: 8px 0 12px;
+      padding: 10px 12px;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: var(--text);
+      background: rgba(167, 139, 250, 0.08);
+      border: 1px solid rgba(167, 139, 250, 0.22);
+      border-radius: 10px;
+      white-space: pre-wrap;
+      text-align: left;
+    }
+    .char-biography::before {
+      content: '略歴';
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
     .char-detail {
       font-size: 0.88rem;
       color: var(--text-muted);
@@ -921,6 +942,7 @@
       box-sizing: border-box;
       width: max-content;
       max-width: 13em;
+      max-height: 7.5em;
       padding: 5px 8px;
       background: rgba(30, 30, 40, 0.96);
       border: 1px solid var(--border);
@@ -930,9 +952,14 @@
       color: var(--text);
       text-align: left;
       pointer-events: none;
-      white-space: pre;
-      word-break: keep-all;
-      overflow-wrap: normal;
+      cursor: default;
+      user-select: none;
+      -webkit-user-select: none;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      overflow: hidden;
+      scrollbar-width: none;
       /* デフォルト：真上。しっぽ先端 = アイコン上縁 */
       left: 50%;
       right: auto;
@@ -941,6 +968,7 @@
       transform: translateX(-50%);
       margin-bottom: 0;
     }
+    .pos-bubble::-webkit-scrollbar { display: none; width: 0; height: 0; }
     .pos-bubble::after {
       content: '';
       position: absolute;
@@ -1347,4 +1375,244 @@ html {
   .pos-marker { width: 28px; height: 28px; }
   .pos-marker { font-size: 0.82rem; }
   .pair-actions { grid-template-columns: 1fr; }
+}
+
+/* こんな世界なら？ */
+.worldline-card {
+  background: rgba(0,0,0,0.18);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+.worldline-card > strong {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--accent);
+  font-size: 0.95rem;
+}
+.worldline-attrs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.worldline-pair-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start; /* 左寄せ：A固定、Bが寄ってくる */
+  gap: 6px;                    /* ×の左右の隙間（狭くするほどBがAに寄る） */
+  margin-bottom: 10px;
+}
+.worldline-pair-row.preview { align-items: flex-start; }
+.worldline-side {
+  flex: 0 0 auto;              /* 幅は中身次第。余白で広がらない */
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+.worldline-x {
+  flex-shrink: 0;
+  align-self: flex-start;      /* アイコン行に × */
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 0 2px;
+  line-height: 36px;
+  margin-top: 0;
+}
+/* アイコン + 属性 */
+.worldline-attr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+.worldline-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  border: 2px solid rgba(255,255,255,0.25);
+  flex-shrink: 0;
+}
+/* 属性＝名札風（大きめ・枠付き） */
+.worldline-attr input[type="text"] {
+  margin: 0 !important;
+  width: auto;
+  min-width: 5.5em;
+  max-width: 100%;
+  flex: 1;
+  font-size: 1.05rem !important;
+  font-weight: 700;
+  line-height: 1.3;
+  padding: 6px 12px !important;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset;
+}
+.worldline-attr input[type="text"]:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+.worldline-attr-text {
+  display: inline-block;
+  box-sizing: border-box;
+  font-weight: 700;
+  font-size: 1.05rem;
+  width: 12em;
+  max-width: 12em;
+  line-height: 1.3;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset;
+  word-break: break-word;
+}
+/* 属性の下にコメント：名札の左右端に揃える（アイコン分を空けて幅を合わせる） */
+.worldline-side-comment,
+.worldline-side > .song-memo {
+  /* icon 36px + gap 10px = 46px → 名札の左端に合わせる */
+  margin: 0 0 0 46px !important;
+  width: 15em !important;
+  max-width: 15em;
+  box-sizing: border-box;
+  font-size: 0.82rem !important;
+  font-weight: 400 !important;
+  padding: 5px 8px !important;
+  opacity: 0.95;
+}
+.worldline-side-comment {
+  /* 編集時も名札と同じ横位置 */
+}
+.worldline-card .song-memo {
+  margin-top: 0;
+}
+/* プレビュー時：名札とコメントを同じカラム幅に */
+.worldline-side > .worldline-preview-attr {
+  width: 100%;
+}
+.worldline-side > .worldline-preview-attr .worldline-attr-text {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.worldline-preview-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+.worldline-preview-attr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  width: 100%;
+}
+.worldline-detail {
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  line-height: 1.55;
+  color: var(--text);
+  border-left: none;
+}
+@media (max-width: 700px) {
+  .worldline-pair-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .worldline-side {
+    max-width: 100%;
+  }
+  .worldline-x {
+    align-self: center;
+    line-height: 1.2;
+    padding: 2px 0;
+  }
+}
+
+
+/* 二人の関係性：A/B対の横並びプレビュー */
+.rel-pair-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+  grid-column: 1 / -1;
+}
+.rel-pair-row .rel-item {
+  min-width: 0;
+}
+.rel-pair-row .rel-item-empty {
+  visibility: hidden;
+  min-height: 1px;
+  pointer-events: none;
+}
+@media (max-width: 560px) {
+  .rel-pair-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.diff-badge.series-badge {
+  background: rgba(244, 114, 182, 0.18);
+  color: var(--pink);
+}
+
+
+/* 作品の関係者 */
+.work-related-preview {
+  width: 100%;
+}
+.work-related-card {
+  background: rgba(0,0,0,0.18);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+}
+.work-related-card:last-child { margin-bottom: 0; }
+.work-related-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.work-related-intro {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  color: var(--text);
+}
+
+
+.field-note {
+  margin: 2px 0 8px !important;
+  font-size: 0.8rem !important;
+  line-height: 1.4;
+  opacity: 0.9;
+}
+
+
+.work-link {
+  color: var(--accent);
+  text-decoration: underline;
+  word-break: break-all;
+}
+.work-link:hover {
+  color: var(--pink);
 }
